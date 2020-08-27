@@ -5458,6 +5458,31 @@ a.invoice-email img{
     color: #fff!important;
 }
 
+/* .remember_me_box .checkmark{
+    top: 0px; 
+} */
+
+.remember_me_box .rm_a{
+    display: block;
+    text-align: left;
+    color:#8b8b8b;
+    font-size:20px;
+}
+
+.order-repeat{
+    border:1px solid #005e6a;
+    border-radius: 25px;
+    background: transparent;
+}
+.address_list{
+    padding:0 15px;
+}
+
+.address_list .row{
+    border-bottom: 1px solid #b9b9b9;
+    padding: 20px 0px;
+}
+
 @media (max-width: 767px){
     #popup-box .modal-dialog {
         height: auto!important;

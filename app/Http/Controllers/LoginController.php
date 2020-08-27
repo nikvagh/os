@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Validator;
 use Session;
 use Redirect;
+use Cookie;
+use Illuminate\Http\Response;
+use App\Http\Requests;
 
 class LoginController extends Controller
 {
@@ -31,6 +34,39 @@ class LoginController extends Controller
     {
         // print_r($request->all());
         // exit;
+
+        // $minutes = 60;
+        // $response = new Response('Set Cookie');
+        // $response->withCookie(cookie('name', 'MyValue'));
+        // return $response;
+
+        // $this->setCookie($request);
+
+        // $this->getCookie($request);
+
+        // $this->
+        // $value = $request->cookie('name');
+        // echo $value;
+        // exit;
+
+        // if($request->remember_me){
+        //     echo "111";
+        //     // Cookie::queue('mobile', $request->mobile);
+        //     // Cookie::queue('mobile1', "kk");
+        //     // $mk = Cookie::get('mobile');
+        //     // $mk1 = Cookie::get('mobile1');
+
+        //     // echo $mk;
+        //     // echo $mk1;
+        //     // echo "222";
+        //     Cookie::forever('cookie', $request->mobile);
+
+        //     echo $mobile = Cookie::get('cookie');
+        // }
+        // echo "333";
+        // exit;
+
+
 
         $validator = Validator::make($request->all(), [
                     'mobile' => 'required|numeric||digits:11',
@@ -89,6 +125,12 @@ class LoginController extends Controller
                 }
                 // echo "<pre>";
                 // print_r($result);
+
+                if($request->remember_me){
+                    
+                }
+
+
             }else{
               echo "error:new";  
             }
@@ -194,9 +236,9 @@ class LoginController extends Controller
                     return redirect('/');
                 }else{
 
-                    echo "<pre>";
-                    print_r($result);
-                    exit;
+                    // echo "<pre>";
+                    // print_r($result);
+                    // exit;
 
                     Session::flash('message_e', $result->message);
                     return redirect('/otp_verify/'.$mobile);
@@ -218,6 +260,42 @@ class LoginController extends Controller
         $request->session()->forget('token');
         $request->session()->forget('user');
         return redirect('/login');
+    }
+
+    public function setCookie(Request $request){
+    //     // $minutes = 60;
+    //     // print_r($request->all());
+    //     // exit;    
+
+        // Cookie::forever('mobile', $request->mobile);
+        // echo $cookie = Cookie::get('mobile');
+        // echo $request->mobile;
+        // exit;
+
+        setcookie('nik', 'nik1');
+
+        echo Cookie::get('nik');
+
+        // if(!isset($_COOKIE['nik'])) {
+        //     echo $_COOKIE['nik'];
+        // } else {
+        //     echo "not set";
+        // }
+
+        $response = new Response('Set Cookie');
+        $response->withCookie(cookie('mobile', $request->mobile),100);
+        return $response;
+
+    //     $minutes = 60;
+    //     $response = new Response('Set mobile');
+    //     $response->withCookie(cookie('mobile', $request->mobile, $minutes));
+    //     return $response;
+    }
+
+    public function getCookie(Request $request){
+        $value = $request->cookie('nik');
+        echo "get";
+        echo $value;
     }
 
 }

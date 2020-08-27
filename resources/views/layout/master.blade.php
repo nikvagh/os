@@ -160,42 +160,42 @@
                             <div class="navbar-collapse" id="navbar">
                                 <ul class="navbar-nav" id="collapse-parent">
                                     <li class="nav-item">
-                                        <a class="nav-title" href="OTC-medicine.html">
+                                        <a class="nav-title" href="{{ url('disease/list/1') }}">
                                             <span>{{ __('messages.OTC_Medicine') }}</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-title" href="javascript:void(0)">
+                                        <a class="nav-title" href="{{ url('product/list/5f32b1ad61563518bc497dfb/1') }}">
                                             <span>{{ __('messages.Medical_Equipment') }}</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-title" href="javascript:void(0)">
+                                        <a class="nav-title" href="{{ url('medicine/list/1') }}">
                                             <span>{{ __('messages.Prescription_Medicine') }}</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-title" href="javascript:void(0)">
+                                        <a class="nav-title" href="{{ url('product/list/5f32b1f361563518bc497dfc/1') }}">
                                             <span>{{ __('messages.Female_Products') }}</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-title" href="javascript:void(0)">
+                                        <a class="nav-title" href="{{ url('product/list/5f32b25d61563518bc497dfe/1') }}">
                                             <span>{{ __('messages.Baby_Products') }}</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-title" href="javascript:void(0)">
+                                        <a class="nav-title" href="{{ url('product/list/5f32b15c61563518bc497dfa/1') }}">
                                             <span>{{ __('messages.Mens_Products') }}</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-title" href="javascript:void(0)">
+                                        <a class="nav-title" href="{{ url('product/list/5f32b22961563518bc497dfd/1') }}">
                                             <span>{{ __('messages.Disinfectant_Medicine') }}</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-title" href="active-doctor.html">
+                                        <a class="nav-title" href="{{ url('doctor_list') }}">
                                             <span>{{ __('messages.Online_Doctors') }}</span>
                                         </a>
                                     </li>
@@ -262,7 +262,7 @@
                                             <a href="javascript:void(0)" class="ft-sublink">Legal notice</a>
                                             <a href="javascript:void(0)" class="ft-sublink">About us</a>
                                             <a href="javascript:void(0)" class="ft-sublink">Secure payment</a>
-                                            <a href="javascript:void(0)" class="ft-sublink">Contact us</a>
+                                            <a href="{{ url('contact_us') }}" class="ft-sublink">Contact us</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -274,8 +274,8 @@
                                     </a>
                                     <ul class="footer-sublist collapse" id="collapse-3">
                                         <li class="ftsublink-li">
-                                            <a href="javascript:void(0)" class="ft-sublink">Personal info</a>
-                                            <a href="javascript:void(0)" class="ft-sublink">Orders</a>
+                                            <a href="{{ url('profile') }}" class="ft-sublink">Personal info</a>
+                                            <a href="{{ url('profile/order_history') }}" class="ft-sublink">Orders</a>
                                             <a href="javascript:void(0)" class="ft-sublink">Credit slips</a>
                                             <a href="javascript:void(0)" class="ft-sublink">Addresses</a>
                                             <a href="javascript:void(0)" class="ft-sublink">My wishlists</a>

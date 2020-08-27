@@ -22,9 +22,9 @@ class DoctorController extends Controller
         $token = $request->session()->get('token');
 
         $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
-        $response = $client->post(config('constants.API_ROOT').'api/v1/otc_disease/get_all_w_pag', [
+        $response = $client->post(config('constants.API_ROOT').'api/v1/doctors/get_all_docs', [
             'form_params' => [
-                "page" => $request->page_number-1,
+                // "page" => $request->page_number-1,
                 "limit" => (config('constants.product_per_page')),
             ],
             'headers' => [
@@ -46,8 +46,7 @@ class DoctorController extends Controller
                 if($result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
-                }
-                if($result->statusCode == config('constants.user_delete_code')){
+                }else if($result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -79,10 +78,10 @@ class DoctorController extends Controller
             }
         }
         
-        $data['curr_page'] = $request->page_number;
-        $data['page'] = $request->page_number-1;
+        // $data['curr_page'] = $request->page_number;
+        // $data['page'] = $request->page_number-1;
         // $data['pagination'] = $this->paginate($data['page_data']);
-        return view('disease_list')->with($data);
+        return view('doctor_list')->with($data);
     }
 
     public function doctor_details(Request $request){

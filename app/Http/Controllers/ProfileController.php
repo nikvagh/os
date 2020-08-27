@@ -50,32 +50,32 @@ class ProfileController extends Controller
         }
 
         // =====================================
-        $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
-        $response = $client->post(config('constants.API_ROOT').'api/v1/order/history', [
-                'form_params' => [],
-                'headers' => [
-                    'Authorization' => config('constants.token_type').$token,
-                ]
-            ]);
+        // $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
+        // $response = $client->post(config('constants.API_ROOT').'api/v1/order/history', [
+        //         'form_params' => [],
+        //         'headers' => [
+        //             'Authorization' => config('constants.token_type').$token,
+        //         ]
+        //     ]);
         
-        if($response->getStatusCode() == 200){
-            $result = json_decode($response->getBody()->getContents());
+        // if($response->getStatusCode() == 200){
+        //     $result = json_decode($response->getBody()->getContents());
 
-            if($result->status){
-               $data['order_history'] = $result->data;
-            }else{
-                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
-                    Session::flash('message_e', config('constants.logout_msg'));
-                    return redirect('/login');
-                }
-                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
-                    Session::flash('message_e', $result->message);
-                    return redirect('/login');
-                }else{
-                    $data['order_history_msg'] = $result->message;
-                }
-            }
-        }
+        //     if($result->status){
+        //        $data['order_history'] = $result->data;
+        //     }else{
+        //         if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
+        //             Session::flash('message_e', config('constants.logout_msg'));
+        //             return redirect('/login');
+        //         }
+        //         if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
+        //             Session::flash('message_e', $result->message);
+        //             return redirect('/login');
+        //         }else{
+        //             $data['order_history_msg'] = $result->message;
+        //         }
+        //     }
+        // }
 
         // =====================================
         // $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
@@ -108,6 +108,12 @@ class ProfileController extends Controller
         // echo "<pre>";
         // print_r($data);
         // echo "</pre>";
+
+        if($request->tab){
+            $data['tab'] = $request->tab;
+        }else{
+            $data['tab'] = "";
+        }
         return view('profile')->with($data);
     }
 
@@ -167,6 +173,42 @@ class ProfileController extends Controller
         }
 
         return view('profile-block')->with($data);
+    }
+
+    public function get_order_block(Request $request){
+
+        $token = $request->session()->get('token');
+        $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
+        $response = $client->post(config('constants.API_ROOT').'api/v1/order/history', [
+                'form_params' => [],
+                'headers' => [
+                    'Authorization' => config('constants.token_type').$token,
+                ]
+            ]);
+        
+        if($response->getStatusCode() == 200){
+            $result = json_decode($response->getBody()->getContents());
+
+            if($result->status){
+               $data['order_history'] = $result->data;
+            }else{
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
+                    Session::flash('message_e', config('constants.logout_msg'));
+                    return redirect('/login');
+                }
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
+                    Session::flash('message_e', $result->message);
+                    return redirect('/login');
+                }else{
+                    $data['order_history_msg'] = $result->message;
+                }
+            }
+        }
+
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        return view('profile-order-block')->with($data);
     }
 
     public function load_balance_block(Request $request){
@@ -349,28 +391,83 @@ class ProfileController extends Controller
         if($response->getStatusCode() == 200){
             $result = json_decode($response->getBody()->getContents());
 
+            // echo "<pre>";print_r($result);
+            // echo "</pre>";
+            // exit;
+
             if($result->status){
                 $data['all_address'] = $result->data;
                 ?>
                     <ul>
-                        <?php foreach($data['all_address'] as $key=>$val){ ?>
+                        
                             <li>
                                 <div class="payment-address-cont">
-                                    <div class="payment-address-desc">
-                                        <label class="cus-radio">
-                                            <span class="payment-radio-title"><?php echo $val->name; ?></span>
-                                            <input type="radio" name="radio_address" <?php if($val->is_primary == 1){ echo "checked"; } ?> value="<?php echo $val->_id; ?>">
+                                    <div class="payment-address-desc" style="width:100%">
+
+                                        <label class="cus-radio text-left">
+                                            <span class="payment-radio-title">Primary Address</span>
+                                            <input type="radio" name="radio_address" cheched value="">
                                             <span class="checkmark"></span>
                                         </label>
-                                        <p class="payment-address"><?php echo $val->address. ' '.$val->address2; ?></p>
-                                    </div>
-                                    <div class="payment-address-desc">
-                                        <a class="c-pointer" onclick="edit_arrdess('<?php echo $val->_id; ?>')"><i class="fas fa-pen"></i></a>
-                                        <a class="c-pointer" onclick="delete_arrdess('<?php echo $val->_id; ?>')"><i class="fas fa-trash"></i></a>
+
+                                        <?php foreach($data['all_address'] as $key=>$val){ ?>
+                                            <?php if($val->is_primary == 1){ ?>
+
+                                                <div class="row address_list checkout-order-desc">
+                                                    <div class="col-xl-8 col-lg-8 col-md-8 text-left">
+                                                        <p class="payment-address"><?php echo $val->address. ' '.$val->address2; ?></p>
+                                                    </div>
+                                                    <div class="col-xl-4 col-lg-4 col-md-4 text-right">
+                                                        <div class="payment-address-desc1">
+                                                            <a class="c-pointer" onclick="edit_arrdess('<?php echo $val->_id; ?>')"><i class="fas fa-pen"></i></a>
+                                                            <!-- <a class="c-pointer text-danger" onclick="delete_arrdess('<?php //echo $val->_id; ?>')"><i class="fas fa-trash"></i></a> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            <?php } ?>
+                                        <?php } ?>
+
                                     </div>
                                 </div>
                             </li>
-                        <?php } ?>
+
+
+                            <li>
+                                <div class="payment-address-cont">
+                                    <div class="payment-address-desc" style="width:100%">
+
+                                        <label class="cus-radio text-left">
+                                            <span class="payment-radio-title">Other Addresses</span>
+                                            <input type="radio" name="radio_address" cheched value="">
+                                            <span class="checkmark"></span>
+                                        </label>
+
+                                        <?php foreach($data['all_address'] as $key=>$val){ ?>
+                                            <?php if($val->is_primary != 1){ ?>
+
+                                                <div class="address_list checkout-order-desc">
+                                                    <div class="row">
+                                                        <div class="col-xl-8 col-lg-8 col-md-8 text-left">
+                                                            <p class="payment-address"><?php echo $val->address. ' '.$val->address2; ?></p>
+                                                        </div>
+                                                        <div class="col-xl-4 col-lg-4 col-md-4 text-right">
+                                                            <div class="payment-address-desc1">
+                                                                <a class="c-pointer" onclick="edit_arrdess('<?php echo $val->_id; ?>')"><i class="fas fa-pen"></i></a>
+                                                                <a class="c-pointer text-danger" onclick="delete_arrdess('<?php echo $val->_id; ?>')"><i class="fas fa-trash"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            <?php } ?>
+                                        <?php } ?>
+
+                                    </div>
+                                </div>
+                            </li>
+                            
+                        
                     </ul>
                 <?php
                 exit;
@@ -427,7 +524,7 @@ class ProfileController extends Controller
                                 </div>
                                 <!-- Modal body -->
                                 <div class="modal-body">
-                                    <span class="msg-success width-100p"></span>
+                                    <!-- <span class="msg-success width-100p"></span> -->
                                     <span class="msg-error width-100p"></span>
 
                                     <div class="new-addr-form">
@@ -441,29 +538,22 @@ class ProfileController extends Controller
                                                     <label>Address</label>
                                                     <input type="text" name="address_e" id="address_e" placeholder="" value="<?php echo $address->address; ?>">
                                                 </div>
-                                                <div class="form-group">
+                                                <!-- <div class="form-group">
                                                     <label>House No./Flat No.</label>
                                                     <input type="text" name="address2_e" id="address2_e" placeholder="" value="<?php echo $address->address2; ?>">
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="address-select">
                                                 <label class="checkbox-cont">
                                                     <a href="#" class="arrange">Use this address as a Primary address</a>
-                                                    <input type="checkbox" name="is_primary_e" id="is_primary_e" <?php if($address->is_primary == 1){ echo "checked"; } ?>>
+                                                    <input type="radio" name="is_primary_e" id="is_primary_e" <?php if($address->is_primary == 1){ echo "checked"; } ?>> <?php //echo $address->is_primary; ?>
                                                     <span class="checkmark"></span>
                                                 </label>
-                                                <!-- <label class="checkbox-cont">
+                                                <label class="checkbox-cont">
                                                     <a href="#" class="arrange">Use this address as a Other delivery address</a>
-                                                    <input type="checkbox" checked="checked">
+                                                    <input type="radio" name="is_primary_e" checked="checked" <?php if($address->is_primary != 1){ echo "checked"; } ?>>
                                                     <span class="checkmark"></span>
-                                                </label> -->
-                                            </div>
-                                            <br/>
-                                            <div class="new-addr-form-input">
-                                                <div class="form-group">
-                                                    <label>Contact Number</label>
-                                                    <input type="tel" name="contact_e" id="contact_e" placeholder="" value="<?php echo $address->contact; ?>">
-                                                </div>
+                                                </label>
                                             </div>
                                             <div class="new-addr-form-input-b">
                                                 <!-- <div class="new-addr-form-input">
@@ -476,6 +566,18 @@ class ProfileController extends Controller
                                                         <input type="tel" name="contact" id="contact" placeholder="">
                                                     </div>
                                                 </div> -->
+
+                                                <div class="new-addr-form-input">
+                                                    <div class="form-group">
+                                                        <label>House No./Flat No.</label>
+                                                        <input type="text" name="address2_e" id="address2_e" placeholder="" value="<?php echo $address->address2; ?>">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Contact Number</label>
+                                                        <input type="tel" name="contact_e" id="contact_e" placeholder="" value="<?php echo $address->contact; ?>">
+                                                    </div>
+                                                </div>
+                                                
                                                 <div class="new-addr-form-input">
                                                     <div class="form-group">
                                                         <label>Email</label>
@@ -667,6 +769,36 @@ class ProfileController extends Controller
             }
         }
 
+    }
+
+    public function order_repeat(Request $request){
+        $data = array();
+        $token = $request->session()->get('token');
+
+        $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
+        $response = $client->post(config('constants.API_ROOT').'api/v1/order/repeat', [
+            'form_params' => [
+                "order_id" => $request->order_id
+            ],
+            'headers' => [
+                'Authorization' => config('constants.token_type').$token,
+            ]
+        ]);
+        
+        if($response->getStatusCode() == 200){
+            $result = json_decode($response->getBody()->getContents());
+            // print_r($result);
+            // exit;
+            if($result->status){
+               $data['status'] = $result->status;
+               $data['message'] = $result->message;
+            }else{
+                $data['status'] = $result->status;
+                $data['message'] = $result->message;
+            }
+        }
+
+        echo json_encode($data);
     }
     
 }

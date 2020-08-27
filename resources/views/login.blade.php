@@ -46,9 +46,20 @@
             <a href="#">signup</a>
         </div>
         <div class="signin-input">
-            <input type="text" name="mobile" value="{{ old('mobile') }}">
+            <input type="text" name="mobile" value="{{ old('mobile') }}" placeholder="+88-01xxxxxxxxx">
         </div>
         <br />
+
+        <div class="d-flex justify-content-center">
+            <label class="checkbox-cont remember_me_box">
+                <a class="rm_a">Remember me</a>
+                <input type="checkbox" name="remember_me" id="remember_me">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+
+        <br/>
+
         <div class="send-otp">
             <!-- <a href="login2.html" class="btn btn-style">Send OTP</a> -->
             <input type="submit" href="" class="btn btn-style btn-block" value="Send OTP">

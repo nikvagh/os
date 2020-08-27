@@ -10,7 +10,7 @@ return [
     'token_type' => 'Bearer ',
     'token_ex' => 401,
     'user_delete_code' => 451,
-    'product_per_page' => 1,
+    'product_per_page' => 20,
     'currency' => 'BDT',
     'ssl_json_dir' => 'ssl/',
 ];

@@ -23,11 +23,13 @@
                                     <div class="single-product">
                                         <div class="product-img">
                                             <a href="{{ url('medicine_details/' . $val->_id) }}">
-                                                <img class="img-fluid" src="{{ $val->images[0]->img }}">
+                                                @if(!empty($val1->images))
+                                                    <img class="img-fluid" src="{{ $val->images[0]->img }}">
+                                                @endif
                                             </a>
                                         </div>
                                         <div class="prodyct-content">
-                                            <h6><a href="{{ url('medicine_details/' . $val->_id) }}">{{ $val->generic_name }}</a></h6>
+                                            <h6><a href="{{ url('medicine_details/' . $val->_id) }}">{{ $val->brand_name }}</a></h6>
                                             <p>{!! urldecode($val->description) !!}</p>
                                             <span><sup>৳</sup>{{$val->inventory[0]->price}}</span>
                                         </div>

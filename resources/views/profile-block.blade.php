@@ -28,10 +28,10 @@
             </li>
             <li>
                 <div class="area-cont-detail">
-                    <div class="area-cont">
+                    <!-- <div class="area-cont">
                         <h6>area</h6>
                         <span></span>
-                    </div>
+                    </div> -->
                     <div class="area-cont">
                         <h6>Contact Number</h6>
                         <span>{{ $profile->mobile }}</span>

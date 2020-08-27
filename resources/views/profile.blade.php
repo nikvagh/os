@@ -3,6 +3,9 @@
 @section('content')
 <section class="profile-section section-padding section-bottom-border">
     <div class="container">
+        <span class="msg-success-o width-100p"></span>
+        <span class="msg-error-o width-100p"></span>
+
         <div class="row profile-wrap">
             <div class="col profile-cont">
                 <div class="profile-tab">
@@ -34,8 +37,8 @@
                 </div>
             </div>
             <div class="col profile-cont">
-                <span class="msg-success-o width-100p"></span>
-                <span class="msg-error-o width-100p"></span>
+                <!-- <span class="msg-success-o width-100p"></span>
+                <span class="msg-error-o width-100p"></span> -->
 
                 <div class="tab-content">
                     <div class="tab-pane active" id="profile">
@@ -81,61 +84,7 @@
                         </div> -->
                     </div>
                     <div class="tab-pane" id="order-history">
-                        <div class="order-history-tab-cont">
-                            <div class="order-history-det">
-                                <div class="check-out-title">
-                                    <span>Order</span>
-                                    <h3>History</h3>
-                                </div>
-                                <div class="checkout-or-wrap">
-
-                                @isset($order_history)
-                                    
-                                    @foreach($order_history as $key=>$val)
-                                        @foreach($val->order_data as $key1=>$val1)
-                                            @foreach($val1->item_data as $key2=>$val2)
-                                                <div class="row checkout-order-desc">
-                                                    <div class="col-xl-2 col-lg-2 col-md-2 col-12 checkout-order-detail">
-                                                        <a href="{{ url('product_details/'.$val1->item_id) }}" class=""><img src="{{ $val1->item_image }}" alt="pro1" class="img-fluid"></a>
-                                                    </div>
-                                                    <div class="col-xl-5 col-lg-4 col-md-4 col-12 checkout-order-detail">
-                                                        <div class="checkout-p-de">
-                                                            <h5><a href="{{ url('product_details/'.$val1->item_id) }}">{{ $val1->item_name }}</a></h5>
-                                                            <p>{{ $val2->capacity }}</p>
-                                                            <p>Order ID : {{ $val1->_id }}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xl-2 col-lg-3 col-md-3 col-12 checkout-order-detail">
-                                                        <div class="checkout-or-price">
-                                                            <span class="pr"><img src="image/bengali-letter-black.png" alt="">{{ $val2->price }}</span>
-                                                            <span class="qyt">X{{ $val2->qty }}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xl-3 col-lg-3 col-md-3 col-12 checkout-order-detail">
-                                                        <div class="checkout-p-total">
-                                                            <span><img src="{{ asset('image/bengali-letter-black.png') }}" alt="">{{ $val2->price*$val2->qty }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        @endforeach
-                                    @endforeach
-                                    
-                                @else
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <ul>
-                                            <li> <i class="fa fa-exclamation-circle"></i> {{ $order_history_msg }}</li>
-                                        </ul>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <!-- <span aria-hidden="true">&times;</span> -->
-                                        </button>
-                                    </div> 
-                                @endisset
-
-                                    
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                     <div class="tab-pane" id="order-delivery-ad">
                         <div class="order-delivery-tab-cont">
@@ -291,6 +240,13 @@
 
 @section('footer_js')
     <script>
+
+        @if($tab != "")
+            tab = '{{$tab}}'
+            // alert(tab);
+            $("#"+tab+"_tab_btn").trigger('click');
+        @endif
+
         // order-delivery-detail
         $(document).ready(function(){
             load_profile_block();
@@ -300,9 +256,14 @@
             load_profile_block();
         });
 
+        $("#order_history_tab_btn").click(function(){
+            load_order_block();
+        });
+
         $("#address_tab_btn").click(function(){
             load_address();
         });
+        
 
         $("#balance_tab_btn").click(function(){
             load_balance_block();
@@ -319,6 +280,18 @@
                     // console.log(data);
                     // $(".msg-error,.msg-success").html('');
                     $("#profile").html(data);
+                }
+            });
+        }
+
+        function load_order_block(){
+            $.ajax({
+                type:'GET',
+                url:'/order-block',
+                success:function(data) {
+                    // console.log(data);
+                    // $(".msg-error,.msg-success").html('');
+                    $("#order-history").html(data);
                 }
             });
         }
@@ -505,35 +478,62 @@
             });
         });
 
-        $(document).on('change','input[name="radio_address"]', function(e) {
-            address_id = $(this).val();
-            is_primary = 1;
+        // $(document).on('change','input[name="radio_address"]', function(e) {
+        //     address_id = $(this).val();
+        //     is_primary = 1;
+
+        //     $.ajax({
+        //         type:'POST',
+        //         url:'/change_address_status',
+        //         dataType: "json",
+        //         data: {
+        //             "_token": "{{ csrf_token() }}",
+        //             "is_primary": is_primary,
+        //             "address_id": address_id
+        //         },
+        //         success:function(data) {
+        //             $(".msg-error,.msg-success").html('');
+        //             if(data.error){
+        //                 $(".msg-error-o").html('<div class="alert alert-danger"><ul><li>'+data.error+'</li></ul></div>');
+        //             }
+        //             if(data.success){
+        //                 // $("#add_address_frm")[0].reset();
+        //                 $("#edit-address").modal("hide");
+        //                 $(".msg-success-o").html('<div class="alert alert-success"><ul><li>'+data.success+'</li></ul></div>').show().delay(3000).fadeOut();
+        //             }
+        //             load_address();
+        //             // $("#msg").html(data.msg);
+        //         }
+        //     });
+        // });
+
+        $(document).on('click', '.order-repeat', function(e) {
+            e.preventDefault();
+
+            order_id = $(this).attr('order_id');
 
             $.ajax({
                 type:'POST',
-                url:'/change_address_status',
+                url:'{{ url("order_repeat") }}',
                 dataType: "json",
                 data: {
                     "_token": "{{ csrf_token() }}",
-                    "is_primary": is_primary,
-                    "address_id": address_id
+                    "order_id": order_id
                 },
                 success:function(data) {
-                    $(".msg-error,.msg-success").html('');
-                    if(data.error){
-                        $(".msg-error-o").html('<div class="alert alert-danger"><ul><li>'+data.error+'</li></ul></div>');
+                    if(data.status){
+                        $(".msg-success-o").html('<div class="alert alert-success"><ul><li>'+data.message+'</li></ul></div>').show().delay(3000).fadeOut();
+                    }else{
+                        if(data.re){
+                            window.location.href = "{{ url('') }}/"+data.re;
+                        }else{
+                            $(".msg-error-o").html('<div class="alert alert-warning"><ul><li>'+data.message+'</li></ul></div>').show().delay(3000).fadeOut();
+                        }
                     }
-                    if(data.success){
-                        // $("#add_address_frm")[0].reset();
-                        $("#edit-address").modal("hide");
-                        $(".msg-success-o").html('<div class="alert alert-success"><ul><li>'+data.success+'</li></ul></div>').show().delay(3000).fadeOut();
-                    }
-                    load_address();
-                    // $("#msg").html(data.msg);
+                    load_order_block();
                 }
             });
         });
-        
 
     </script>
 @endsection

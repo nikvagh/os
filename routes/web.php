@@ -111,16 +111,18 @@ Route::middleware('checkLogin')->group(function () {
 
     // Route::get('buscar/{nom}', 'FrontController@buscarPrd');
 
-    Route::get('/profile', 'ProfileController@index');
+    Route::get('/profile/{tab?}', 'ProfileController@index');
     Route::post('/add_new_address', 'ProfileController@add_new_address');
     Route::post('/add_money', 'ProfileController@add_money');
     Route::post('delete_address', 'ProfileController@delete_address');
     Route::get('/load_address', 'ProfileController@load_address');
     Route::get('/load_balance_block', 'ProfileController@load_balance_block');
+    Route::post('/order_repeat', 'ProfileController@order_repeat');
 
     Route::get('/get_edit_address/{address_id}', 'ProfileController@get_edit_address');
     Route::post('update_address', 'ProfileController@update_address');
     Route::get('/profile-block','ProfileController@get_profile_block');
+    Route::get('/order-block','ProfileController@get_order_block');
     Route::post('change_address_status', 'ProfileController@change_address_status');
 
     Route::get('/setting', 'SettingController@index');
@@ -141,9 +143,12 @@ Route::middleware('checkLogin')->group(function () {
     Route::get('/disease_details/{dis_id}', 'DiseaseController@disease_details');
     Route::get('/load_more_disease/{page}', 'DiseaseController@load_more_disease');
 
+    Route::get('/doctor_list', 'DoctorController@index');
     Route::get('/doctor_details/{doctor_id}', 'DoctorController@doctor_details');
     Route::post('/req_callback', 'DoctorController@req_callback');
 
+
+    Route::get('/contact_us', 'CommonController@contact_us');
 
     // Route::get('/cart', 'CartController@index');
     Route::post('/add_to_cart', 'CheckoutController@add_to_cart');
@@ -164,8 +169,6 @@ Route::middleware('checkLogin')->group(function () {
     Route::post('/place_order', 'PaymentController@place_order');
 
     Route::get('/success', 'SuccessController@index');
-
-
 
 
 
