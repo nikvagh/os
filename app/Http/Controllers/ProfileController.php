@@ -18,6 +18,7 @@ class ProfileController extends Controller
         // echo "<pre>";
         // print_r(session()->all());
         // echo "</pre>";
+        // exit;
         
         $data = array();
 
@@ -133,11 +134,11 @@ class ProfileController extends Controller
             if($result->status){
                $data['profile'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == config('constants.user_delete_code')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -171,12 +172,17 @@ class ProfileController extends Controller
                 }
             }
         }
-
-        return view('profile-block')->with($data);
+        
+        // return view('profile-block')->with($data);
+        $data['view_data'] = view('profile-block')->with($data)->render();
+        return response()->json($data);
     }
 
     public function get_order_block(Request $request){
 
+
+        $data = array();
+        
         $token = $request->session()->get('token');
         $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
         $response = $client->post(config('constants.API_ROOT').'api/v1/order/history', [
@@ -194,11 +200,10 @@ class ProfileController extends Controller
             }else{
                 if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
-                    return redirect('/login');
-                }
-                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
+                    $data['re'] = '/login';
+                }else if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
-                    return redirect('/login');
+                    $data['re'] = '/login';
                 }else{
                     $data['order_history_msg'] = $result->message;
                 }
@@ -208,7 +213,17 @@ class ProfileController extends Controller
         // echo "<pre>";
         // print_r($data);
         // echo "</pre>";
-        return view('profile-order-block')->with($data);
+        // view('profile-order-block')->with('leads', json_decode($leads, true));
+        
+        
+        // view('profile-order-block')->with(json_encode($data,true));
+        // echo json_encode($data);
+
+        // echo $view = view("profile-order-block",compact($data))->render();
+        // return response()->json(['html'=>$view]);
+        $data['view_data'] = view('profile-order-block')->with($data)->render();
+
+        return response()->json($data);
     }
 
     public function load_balance_block(Request $request){
@@ -228,18 +243,21 @@ class ProfileController extends Controller
             if($result->status){
                $data['balance_history'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == config('constants.user_delete_code')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
             }
         }
         // print_r($data);
-        return view('balance_block')->with($data);
+        // return view('balance_block')->with($data);
+
+        $data['view_data'] = view('balance_block')->with($data)->render();
+        return response()->json($data);
     }
 
     public function add_money(Request $request){
@@ -256,58 +274,64 @@ class ProfileController extends Controller
             exit;
         }
 
-        $token = $request->session()->get('token');
-        $trx_id = time();
-        $payment_status = true;
-
-        $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
-        $response = $client->post(config('constants.API_ROOT').'api/v1/wallet/add_money', [
-                'form_params' => [
-                    'amount' => $request->amount,
-                    'trx_id' => $trx_id,
-                    'payment_status' => $payment_status
-                ],
-                'headers' => [
-                    'Authorization' => config('constants.token_type').$token,
-                ]
-            ]);
-
-        if($response->getStatusCode() == 200){
-            $result = json_decode($response->getBody()->getContents());
-            // print_r($result);
-
-            if($result->status){
-                $data['success'] = $result->message;
-            }else{
-                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
-                    Session::flash('message_e', config('constants.logout_msg'));
-                    return redirect('/login');
-                }else if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
-                    Session::flash('message_e', $result->message);
-                    return redirect('/login');
-                }else{
-                    $data['error'] = $result->message;
-                }
-            }
-        }
-
-        // =================================
-
-        $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
-        $response = $client->post(config('constants.API_ROOT').'api/v1/users/get_detail', [
-                'form_params' => [],
-                'headers' => [
-                    'Authorization' => config('constants.token_type').$token,
-                ]
-            ]);
-        if($response->getStatusCode() == 200){
-            $result = json_decode($response->getBody()->getContents());
-            if($result->status){
-                $request->session()->put('user', $result->data);
-            }
-        }
-
+        $data['amount'] = $request->amount;
         echo json_encode($data);
+        exit;
+
+        // =========================== code on return 
+
+        // $token = $request->session()->get('token');
+        // $trx_id = time();
+        // $payment_status = true;
+
+        // $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
+        // $response = $client->post(config('constants.API_ROOT').'api/v1/wallet/add_money', [
+        //         'form_params' => [
+        //             'amount' => $request->amount,
+        //             'trx_id' => $trx_id,
+        //             'payment_status' => $payment_status
+        //         ],
+        //         'headers' => [
+        //             'Authorization' => config('constants.token_type').$token,
+        //         ]
+        //     ]);
+
+        // if($response->getStatusCode() == 200){
+        //     $result = json_decode($response->getBody()->getContents());
+        //     // print_r($result);
+
+        //     if($result->status){
+        //         $data['success'] = $result->message;
+        //     }else{
+        //         if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
+        //             Session::flash('message_e', config('constants.logout_msg'));
+        //             return redirect('/login');
+        //         }else if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
+        //             Session::flash('message_e', $result->message);
+        //             return redirect('/login');
+        //         }else{
+        //             $data['error'] = $result->message;
+        //         }
+        //     }
+        // }
+
+        // // =================================
+
+        // $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
+        // $response = $client->post(config('constants.API_ROOT').'api/v1/users/get_detail', [
+        //         'form_params' => [],
+        //         'headers' => [
+        //             'Authorization' => config('constants.token_type').$token,
+        //         ]
+        //     ]);
+        // if($response->getStatusCode() == 200){
+        //     $result = json_decode($response->getBody()->getContents());
+        //     if($result->status){
+        //         $request->session()->put('user', $result->data);
+        //     }
+        // }
+
+        // echo json_encode($data);
     }
 
     public function add_new_address(Request $request){
@@ -378,15 +402,14 @@ class ProfileController extends Controller
     }
 
     public function load_address(Request $request){
-
         $token = $request->session()->get('token');
         $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
         $response = $client->post(config('constants.API_ROOT').'api/v1/address/get_all', [
-                'form_params' => [],
-                'headers' => [
-                    'Authorization' => config('constants.token_type').$token,
-                ]
-            ]);
+            'form_params' => [],
+            'headers' => [
+                'Authorization' => config('constants.token_type').$token,
+            ]
+        ]);
         
         if($response->getStatusCode() == 200){
             $result = json_decode($response->getBody()->getContents());
@@ -397,80 +420,6 @@ class ProfileController extends Controller
 
             if($result->status){
                 $data['all_address'] = $result->data;
-                ?>
-                    <ul>
-                        
-                            <li>
-                                <div class="payment-address-cont">
-                                    <div class="payment-address-desc" style="width:100%">
-
-                                        <label class="cus-radio text-left">
-                                            <span class="payment-radio-title">Primary Address</span>
-                                            <input type="radio" name="radio_address" cheched value="">
-                                            <span class="checkmark"></span>
-                                        </label>
-
-                                        <?php foreach($data['all_address'] as $key=>$val){ ?>
-                                            <?php if($val->is_primary == 1){ ?>
-
-                                                <div class="row address_list checkout-order-desc">
-                                                    <div class="col-xl-8 col-lg-8 col-md-8 text-left">
-                                                        <p class="payment-address"><?php echo $val->address. ' '.$val->address2; ?></p>
-                                                    </div>
-                                                    <div class="col-xl-4 col-lg-4 col-md-4 text-right">
-                                                        <div class="payment-address-desc1">
-                                                            <a class="c-pointer" onclick="edit_arrdess('<?php echo $val->_id; ?>')"><i class="fas fa-pen"></i></a>
-                                                            <!-- <a class="c-pointer text-danger" onclick="delete_arrdess('<?php //echo $val->_id; ?>')"><i class="fas fa-trash"></i></a> -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            <?php } ?>
-                                        <?php } ?>
-
-                                    </div>
-                                </div>
-                            </li>
-
-
-                            <li>
-                                <div class="payment-address-cont">
-                                    <div class="payment-address-desc" style="width:100%">
-
-                                        <label class="cus-radio text-left">
-                                            <span class="payment-radio-title">Other Addresses</span>
-                                            <input type="radio" name="radio_address" cheched value="">
-                                            <span class="checkmark"></span>
-                                        </label>
-
-                                        <?php foreach($data['all_address'] as $key=>$val){ ?>
-                                            <?php if($val->is_primary != 1){ ?>
-
-                                                <div class="address_list checkout-order-desc">
-                                                    <div class="row">
-                                                        <div class="col-xl-8 col-lg-8 col-md-8 text-left">
-                                                            <p class="payment-address"><?php echo $val->address. ' '.$val->address2; ?></p>
-                                                        </div>
-                                                        <div class="col-xl-4 col-lg-4 col-md-4 text-right">
-                                                            <div class="payment-address-desc1">
-                                                                <a class="c-pointer" onclick="edit_arrdess('<?php echo $val->_id; ?>')"><i class="fas fa-pen"></i></a>
-                                                                <a class="c-pointer text-danger" onclick="delete_arrdess('<?php echo $val->_id; ?>')"><i class="fas fa-trash"></i></a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            <?php } ?>
-                                        <?php } ?>
-
-                                    </div>
-                                </div>
-                            </li>
-                            
-                        
-                    </ul>
-                <?php
-                exit;
             }else{
                 if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
@@ -480,20 +429,16 @@ class ProfileController extends Controller
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }else{
-                    ?>
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            <ul>
-                                <li> <i class="fa fa-exclamation-circle"></i> <?php echo $result->message; ?></li>
-                            </ul>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <!-- <span aria-hidden="true">&times;</span> -->
-                            </button>
-                        </div>
-                    <?php
-                    // $data['all_address_msg'] = $result->message;
+                    $data['all_address_msg'] = $result->message;
                 }
             }
         }
+
+        // print_r($data);
+        // exit;
+
+        $data['view_data'] = view('profile-address-block')->with($data)->render();
+        return response()->json($data);
     }
 
     public function get_edit_address (Request $request){
@@ -583,7 +528,7 @@ class ProfileController extends Controller
                                                         <label>Email</label>
                                                         <input type="email" name="email_e" id="email_e" placeholder="Email" value="<?php echo $address->email; ?>">
                                                         <a href="#" class="invoice-email">
-                                                            <img src="image/invoice-info.png">Your invoice will be send to your email
+                                                            <img src="image/invoice-info.png"><span>Your invoice will be send to your email</span>
                                                         </a>
                                                     </div>
                                                 </div>

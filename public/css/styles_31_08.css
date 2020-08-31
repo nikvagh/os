@@ -1350,11 +1350,6 @@ ul.order-medicine li.order-info .app-img a:first-child{
 ul.order-medicine li.order-info .app-img a img{
     border-radius: 5px;
 }
-@media (max-width: 1499px){
-	ul.order-medicine li.order-info form input{
-		max-width: 50%;
-	}
-}
 @media (max-width: 1199px){
     ul.order-medicine li.order-info .order-msg{
         max-width: 70%;
@@ -1389,7 +1384,7 @@ ul.order-medicine li.order-info .app-img a img{
 }
 @media (max-width: 991px){
     ul.order-medicine li.order-info .order-msg{
-        max-width: 100%;
+        max-width: 90%;
     }
     ul.order-medicine li.order-info .order-msg h2{
         font-size: 24px;
@@ -1619,6 +1614,7 @@ ul.social-icon li a:last-child{
         font-size: 14px;
     }
 }
+
 .comp-logo-cont{
     height: 100vh;
     display: flex;
@@ -1626,15 +1622,7 @@ ul.social-icon li a:last-child{
     justify-content: center;
     background-color: #eeeeee;
 }
-.login-cont-wrap{
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
 .login-cont{
-    position: absolute;
-    right: 0;
-    top: 0;
     padding: 80px 80px;
 }
 .login-cont .language-op{
@@ -1642,9 +1630,6 @@ ul.social-icon li a:last-child{
 }
 .login-cont .language-op{
     margin-right: 60px;
-}
-.login-cont-wrap .language-op .switch{
-	margin-left: 0px;
 }
 .login-cont-form{
     text-align: center;
@@ -1663,25 +1648,18 @@ ul.social-icon li a:last-child{
     margin-top: 30px;
     position: relative;
 }
-.login-cont-form .static-country-code{
-    border: none;
-    font-size: 30px;
-    position: absolute;
-    left: 15px;
-    top: 10px;
-}
 .login-cont-form .signin-input input{
     border: none;
     border-bottom:2px solid #d8d8d8;
     width: 100%;
+    text-align: center;
     font-size: 30px;
-    padding: 10px 10px 10px 85px;
 }
 .login-cont-form .signin-input .checkbox-cont{
     position: absolute;
     top: 17px;
     padding-left: 0px;
-    right: 40px;
+    right: 130px;
 }
 .send-otp a{
     width: 100%;
@@ -1739,15 +1717,12 @@ ul.social-icon li a:last-child{
     width: 100%;
 }
 @media (max-width: 1499px){
-   	.login-cont{
-	    padding: 50px 80px 50px 80px;
-	}
-	.otp-input{
-		margin-top: 50px;
-	}
+   .login-cont-form .signin-input .checkbox-cont{
+        right: 45px;
+   } 
 }
+
 @media (max-width: 1199px){
-	
     .login-cont-form{
         width: 80%;
     }
@@ -1761,9 +1736,6 @@ ul.social-icon li a:last-child{
         max-width: 100%;
         flex: 0 0 100%;
     }
-    .login-cont{
-        position: unset;
-    }
     .comp-logo-cont{
         height: 300px;
     }
@@ -1772,10 +1744,6 @@ ul.social-icon li a:last-child{
         font-size: 24px;
     }
     .login-cont-form .signin-input input{
-    	padding: 10px 10px 10px 65px;
-    }
-    .login-cont-form .signin-input input,
-    .login-cont-form .static-country-code{
         font-size: 20px;
     }
     .otp-input{
@@ -1810,10 +1778,6 @@ ul.social-icon li a:last-child{
         margin-top: 15px;
     }
     .login-cont-form .signin-input input{
-    	padding: 10px 10px 10px 55px;
-    }
-    .login-cont-form .signin-input input,
-    .login-cont-form .static-country-code{
         font-size: 16px;
     }
     .otp-input input[type=number]{
@@ -4449,7 +4413,7 @@ ul.social-icon li a:last-child{
     padding: 40px 50px;
 }
 .add-new-address-modal .modal-body::-webkit-scrollbar{
-    width: 1px;
+    width:1px;
 }
 .add-new-address-modal .modal-body{
     -scrollbar-width:none;
@@ -4555,9 +4519,6 @@ a.invoice-email img{
     .add-new-address-modal .modal-footer{
         padding: 25px 40px;
     }
-    .add-new-address-modal .modal-body{
-    	max-height: 500px;
-    }
     .add-new-address-modal .modal-header h4.modal-title {
         font-size: 28px;
     }
@@ -4604,9 +4565,6 @@ a.invoice-email img{
     .add-new-address-modal .modal-dialog {
         max-width: 100%;
         margin: 15px;
-    }
-    .add-new-address-modal .modal-body{
-    	max-height: 100%;
     }
     .add-new-address-modal .modal-header,
     .add-new-address-modal .modal-body,
@@ -5386,7 +5344,6 @@ a.invoice-email img{
 }
 
 
-
 /* added by nik */
 .alert.alert-danger{
     color: #fff;
@@ -5681,92 +5638,9 @@ a.invoice-email img{
 .color-green{
     color:green;
 }
-.cart_header_box{
-    position: relative;
-}
-.cart_badge{
-    position: absolute;
-    right: -5px;
-    top: -5px;
-}
-.search_price{
-    color:#005e6a;
-    font-size:16px;
-    font-weight: 500;
-}
-
-.search-input{
-    position: relative;
-}
-.search-result{
-    position: absolute;
-    z-index: 10;
-    background:white;
-    /* padding:15px; */
-    border-radius: 8px;
-    opacity: 0;
-    /* display: none; */
-}
-.search-result ul:first-child{
-    max-height: 500px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-.search-result ul li{
-    border-bottom: 1px solid #b9b9b9;
-    padding: 10px 10px;
-}
-.search-result ul li:last-child{
-    border-bottom: 0px;
-    /* padding-bottom: 0px; */
-}
-.search-result .result_product_img{
-    display: inline-block;
-    width: 100%;
-}
-.search-result .result_product_img img{
-    width: 100%;
-}
-
-#popup-box-order .popup-modal{
-    height: auto!important;
-}
-#popup-box-order .modal-content{
-    border-radius: .6rem;
-}
-#popup-box-order .modal-body-f-popup-order{
-    background: url('../image/Color-Fill-3.png');
-    background-repeat:no-repeat;
-    width:600px;
-    height:auto;
-    background-size: 100%;
-    background-position: 0px -40px;
-}
-
-#popup-box-order .modal-body-f-popup-order .true-img{
-    padding: 100px 0px 50px 0px;
-}
-
-#popup-box-order .order_heading{
-    font-size: 22px;
-    color: #005e6a;
-    padding-bottom: 20px;
-}
-#popup-box-order .site_name{
-    color: #005e6a;
-}
-#popup-box-order .btn-box{
-    padding:30px 0px;
-}
-#popup-box-order .btn-box .btn{
-    width: 70%;
-}
 
 @media (max-width: 767px){
     #popup-box .modal-dialog {
-        height: auto!important;
-    }
-    #popup-box-order .modal-dialog {
         height: auto!important;
     }
 }

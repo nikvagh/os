@@ -291,14 +291,14 @@ class CheckoutController extends Controller
         // echo "<pre>";
         // print_r($data);
         // echo "</pre>";
-        return view('cart_block')->with($data);
+        // return view('cart_block')->with($data);
+        
+        $data['view_data'] = view('cart_block')->with($data)->render();
+        return response()->json($data);
     }
 
     public function cart(Request $request){
         // return view('cart')->with($data);
-        // echo "<pre>";
-        // print_r($request->session()->all());
-        // echo "</pre>";
         return view('cart');
     }
 
@@ -449,10 +449,38 @@ class CheckoutController extends Controller
             }
         }
 
+        $primary_address = array();
+        if(!empty($data['all_address'])){
+        
+            foreach($data['all_address'] as $key=>$val){
+                if($val->is_primary == 1){
+                    $primary_address = $data['all_address'][$key];
+                }
+            }
+
+        }
+
+        $other_address = array();
+        if(!empty($data['all_address'])){
+        
+            foreach($data['all_address'] as $key=>$val){
+                if($val->is_primary != 1){
+                    $other_address[] = $data['all_address'][$key];
+                }
+            }
+
+        }
+
+
+        $data['primary_address'] = $primary_address;
+        $data['other_address'] = $other_address;
+
         // echo "<pre>";
         // print_r($data);
         // echo "</pre>";
-        return view('checkout_address_block')->with($data);
+        // return view('checkout_address_block')->with($data);
+        $data['view_data'] = view('checkout_address_block')->with($data)->render();
+        return response()->json($data);
     }
 
     public function load_offer_block(Request $request){
@@ -488,7 +516,9 @@ class CheckoutController extends Controller
         // echo "<pre>";
         // print_r($data);
         // echo "</pre>";
-        return view('checkout_offer_block')->with($data);
+        // return view('checkout_offer_block')->with($data);
+        $data['view_data'] = view('checkout_offer_block')->with($data)->render();
+        return response()->json($data);
     }
 
     function get_offer(Request $request){

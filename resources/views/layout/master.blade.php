@@ -29,12 +29,15 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
     </head>
     <body>
+
+        {{ \Helper::human_file_size() }}
+
         <div class="top-header">
             <div class="container">
                 <div class="row">
                     <div class="col top-header-cont">
                         <div class="main-logo">
-                            <a href="{{ url('/') }}" class=""><img src="{{ asset('image/logo.png') }}" alt="logo"></a>
+                            <a href="{{ url('/') }}" class=""><img src="{{ asset('image/logo1.png') }}" alt="logo"></a>
                         </div>
                     </div>
                     <div class="col top-header-cont">
@@ -43,9 +46,11 @@
                                 <span class="search-input-box">
                                     <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
                                     {{csrf_field()}}
-                                    <input type="text" name="needle" id="search_header_s" placeholder="Search Medicine" value="@isset($needle){{ $needle }}@endisset">
+                                    <input type="text" name="needle" id="search_header_s" placeholder="Search Medicine" value="@isset($needle){{ $needle }}@endisset" autocomplete="off">
                                 </span>
                             </form>
+                            <div class="search-result">
+                            </div>
                         </div>
                         <div class="top-main-info">
                             <ul>
@@ -73,8 +78,9 @@
                                 </li>
                                 <li>
                                     <div class="main-info">
-                                        <a href="{{ url('cart') }}">
+                                        <a href="{{ url('cart') }}" class="cart_header_box">
                                             <img class="img-fluid" src="{{ asset('image/top-basket.png') }}">
+                                            <!-- <span class="badge badge-success cart_badge">9</span> -->
                                         </a>
                                         <div class="main-info-text">
                                             <span class="info-text-cart">Cart</span>
@@ -154,7 +160,7 @@
                             <div class="search-input responsive-search">
                                 <span class="search-input-box">
                                     <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
-                                    <input type="text" name="needle" id="search_header_b" placeholder="Search Medicine">
+                                    <input type="text" name="needle" id="search_header_b" placeholder="Search Medicine" autocomplete="off">
                                 </span>
                             </div>
                             <div class="navbar-collapse" id="navbar">
@@ -360,19 +366,51 @@
                 });
             }); 
 
-            $('input[name=needle]').on("keypress", function(e) {
+            // $('input[name=needle]').focusout(function(e) {
+            //     $(".search-result").css('display:none');
+            // });
+            // keypress
+            $('input[name=needle]').on("keyup focus", function(e) {
                 search_val = $(this).val();
                 if (e.keyCode == 13) {
+                    // alert(search_val);
                     var form = $(this).parents('form:first');
                     if(search_val != ""){
                         // form.attr('action', "search_p/"+search_val);
                         // search_url = 'search_p/'+search_val;
-                        console.log(search_val);
+                        // console.log(search_val);
                         form.attr('action', "{{ url('/search_p') }}/"+search_val);
+                        // alert('111');
                     }else{
                         form.removeAttr('action');
+                        // alert('222');
                     }
                 }
+                // if(search_val != ""){
+                    var form = $(this).parents('form:first');
+                    form.attr('action', "{{ url('/search_p') }}/"+search_val);
+
+                    $.ajax({
+                        type:'GET',
+                        url:"{{ url('/ajax_search') }}/"+search_val,
+                        dataType: "json",
+                        success:function(data) {
+                            // console.log(data);
+
+                            if(data.re){
+                                window.location.href = "{{ url('') }}/"+data.re;
+                            }
+                            $(".search-result").html(data.view_data);
+                            $(".search-result").css('opacity','1');
+                        }
+                    });
+                // }
+
+            });
+
+            $(document).on("blur",".search-input",function(){
+                // $(".search-result").html('');
+                // $(".search-result").css('opacity','0');
             });
 
             $(".search_form").on("submit", function(e){

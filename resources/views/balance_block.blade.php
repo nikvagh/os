@@ -55,13 +55,20 @@
                             <div> Transaction ID : {{ $val->_id}} </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-12 checkout-order-detail">
-                            <b>Amount: @if($val->amount < 0) <img src="{{ asset('image/bengali-letter-black.png') }}" alt="" style="width:12px;"> @else <img src="{{ asset('image/bengali-letter-black.png') }}" alt="" style="width:12px;"> @endif {{ $val->amount }}  </span> </b> 
+                            <b>Amount: @if($val->amount < 0) 
+                                    <img src="{{ asset('image/bengali-letter-red.png') }}" alt="" style="width:12px;"> 
+                                    <span class="color-red"> {{ $val->amount }} </span>
+                                @else 
+                                    <img src="{{ asset('image/bengali-letter-black.png') }}" alt="" style="width:12px;">
+                                    <span> {{ $val->amount }}  </span>
+                                @endif
+                            </b> 
                         </div>   
                         <div class="col-xl-12 col-lg-12 col-md-12 col-12 checkout-order-detail"> 
-                            Status : @if($val->payment_status == 1) <span class="text-success"> Completed</span>  @else <span class="text-danger"> Fail</p> @endif  </span>
+                            Status : @if($val->payment_status == 1) <span class="text-success"> Completed</span>  @else <span class="text-danger" class="color-red"> Fail</p> @endif  </span>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-12 checkout-order-detail"> 
-                            <span> Date : {{ date('d - M - Y', strtotime($val->added_on))  }} </span>
+                            <span> Date : {{ date('d - M - Y', $val->added_on)  }} </span>
                         </div>
                     </div>
                 @endforeach

@@ -18,7 +18,7 @@
                             <div class="col-xl-5 col-lg-4 col-md-4 col-12 checkout-order-detail">
                                 <div class="checkout-p-de">
                                     <h5><a href="{{ url('product_details/'.$val->order_data[0]->item_id) }}">{{ $val->order_data[0]->item_name }}</a></h5>
-                                    <p>{{ date('d - M - Y',strtotime($val->placed_on)) }}</p>
+                                    <p>{{ date('d - M - Y',$val->placed_on) }}</p>
                                     <p>Order ID : {{ $val->order_ref }}</p>
                                 </div>
                             </div>
@@ -31,13 +31,25 @@
                             <div class="col-xl-5 col-lg-3 col-md-3 col-12 checkout-order-detail d-flex justify-content-end">
                                 <div class="checkout-p-total">
                                     <span class="d-flex justify-content-end">
-                                        ৳
-                                        <!-- <img src="{{ asset('image/bengali-letter-black.png') }}" alt=""> -->
+                                        <img src="{{ asset('image/bengali-letter-black.png') }}" alt="" height="30px">
                                         {{ $val->grand_total }}</span>
-                                    @if($val->order_status == 0)
-                                        <a class="text-danger"><h6 class="text-danger">Pending</h6></a>
-                                    @elseif($val->order_status == 1)
+                                        @if($val->order_status == 0)
+                                            <a class="text-danger"><h6 class="text-danger">Pending</h6></a>
+                                        @elseif($val->order_status == 1)
+                                            <a class="text-danger"><h6 class="text-danger">Accepted</h6></a>
+                                        @elseif($val->order_status == 2)
+                                            <a class="text-danger"><h6 class="text-danger">Packaging</h6></a>
+                                        @elseif($val->order_status == 3)
+                                            <a class="text-danger"><h6 class="text-danger">Dispatched</h6></a>
+                                        @elseif($val->order_status == 4)
+                                            <a class="text-danger"><h6 class="text-danger">On the Way</h6></a>
+                                        @elseif($val->order_status == 5)
+                                            <a class="text-danger"><h6 class="text-danger">Arrived</h6></a>
+                                        @elseif($val->order_status == 6)
+                                            <a class="text-danger"><h6 class="text-danger">Delivered</h6></a>
+                                        @elseif($val->order_status == 7)
                                         <a class="text-success"><h6 class="text-success">Completed</h6></a>
+
                                     @endif
                                     &nbsp;&nbsp;&nbsp;
                                     <button class="btn order-repeat" order_id="{{ $val->_id }}">Order again</button>

@@ -29,7 +29,7 @@
                                         <div class="prodyct-content">
                                             <h6><a href="{{ url('product_details/' . $val->_id) }}">{{ $val->prod_name }}</a></h6>
                                             <p>{!! urldecode($val->prod_desc) !!}</p>
-                                            <span><sup>৳</sup>{{$val->inventory[0]->price}}</span>
+                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>{{$val->inventory[0]->price}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@
 
 {{-- @include('partials.pagination_link', ['total_record' => 4,'per_page' => (config('constants.product_per_page')), 'curr_page' => $curr_page, 'link_root' => 'product/list/'.$cat_id .'/']) --}}
 
-@include('partials.recomanded')
+{{--@include('partials.recomanded') --}}
 @include('partials.order_from_phone')
 @include('partials.backtotop')
 
@@ -93,11 +93,18 @@
                     promise = $.ajax({
                         type:'GET',
                         url:'/load_more_product/{{$cat_id}}/'+page,
+                        dataType: "json",
                         success:function(data) {
+
+                            if(data.re){
+                                window.location.href = "{{ url('') }}/"+data.re;
+                            }
+
                             // console.log(data);
                             // return false;
-                            if(data != ""){
-                                last_el.after(data);
+                            // if(data.view_data != ""){
+                            if(data.view_data){
+                                last_el.after(data.view_data);
                                 load = "Y";
                                 last_page_class_num++;
                             }else{

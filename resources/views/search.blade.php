@@ -50,7 +50,7 @@
                                                         <div class="prodyct-content">
                                                             <h6><a href="{{ url('product_details/' . $val1->_id) }}">{{$val1->prod_name}}</a></h6>
                                                             <p>{!! urldecode($val1->prod_desc) !!}</p>
-                                                            <span><sup>৳</sup>{{$val1->inventory[0]->price}}</span>
+                                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>{{$val1->inventory[0]->price}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -69,7 +69,7 @@
                                                         <div class="prodyct-content">
                                                             <h6><a href="{{ url('medicine_details/' . $val1->_id) }}">{{$val1->brand_name}}</a></h6>
                                                             <p>{!! urldecode($val1->description) !!}</p>
-                                                            <span><sup>৳</sup>{{$val1->inventory[0]->price}}</span>
+                                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>{{$val1->inventory[0]->price}}</span>
                                                         </div>
                                                     </div>
                                                 </div>

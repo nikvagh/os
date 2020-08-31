@@ -46,9 +46,15 @@
             $.ajax({
                 type:'GET',
                 url:'{{ url("load_cart_block") }}',
+                dataType: "json",
                 success:function(data) {
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+
                     // console.log(data);
-                    $("#cart_box").html(data);
+                    $("#cart_box").html(data.view_data);
                 }
             });
         }
@@ -107,6 +113,14 @@
                 processData: false,
                 data : formData,
                 success:function(data) {
+
+                    // console.log("111");
+                    // console.log(data);
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+                    
                     if(data.status){
                         // console.log('111');
                         $(".msg-success-o").html('<div class="alert alert-success"><ul><li>'+data.message+'</li></ul></div>').show().delay(3000).fadeOut();

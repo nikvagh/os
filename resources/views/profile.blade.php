@@ -3,6 +3,15 @@
 @section('content')
 <section class="profile-section section-padding section-bottom-border">
     <div class="container">
+        
+        @if (Session::has('message_s'))
+            @include('partials.alert', ['type' => "success",'message'=> Session::get('message_s') ])
+        @endif
+
+        @if (Session::has('message_e'))
+            @include('partials.alert', ['type' => "danger",'message'=> Session::get('message_e') ])
+        @endif
+
         <span class="msg-success-o width-100p"></span>
         <span class="msg-error-o width-100p"></span>
 
@@ -175,7 +184,7 @@
                                         <label>Email</label>
                                         <input type="email" name="email" id="email" placeholder="Email">
                                         <a href="#" class="invoice-email">
-                                            <img src="{{ asset('image/invoice-info.png') }}">Your invoice will be send to your email
+                                            <img src="{{ asset('image/invoice-info.png') }}"><span>Your invoice will be send to your email</span>
                                         </a>
                                     </div>
                                 </div>
@@ -211,6 +220,7 @@
                         <form id="add_money_frm" method="post">
                             <div class="new-addr-form-input">
                                 <div class="form-group">
+                                    {{ csrf_field() }}
                                     <input type="text" name="amount" id="amount" placeholder="Enter Amount" class="text-center">
                                 </div>
                             </div>
@@ -243,8 +253,14 @@
 
         @if($tab != "")
             tab = '{{$tab}}'
-            // alert(tab);
-            $("#"+tab+"_tab_btn").trigger('click');
+            // alert("#"+tab+"_tab_btn");
+
+            if(tab == "balance"){
+                $("#"+tab+"_tab_btn").trigger('click');
+                load_balance_block();
+            }else{
+                $("#"+tab+"_tab_btn").trigger('click');
+            }
         @endif
 
         // order-delivery-detail
@@ -276,22 +292,53 @@
             $.ajax({
                 type:'GET',
                 url:'/profile-block',
+                dataType: "json",
                 success:function(data) {
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+
                     // console.log(data);
                     // $(".msg-error,.msg-success").html('');
-                    $("#profile").html(data);
+                    $("#profile").html(data.view_data);
                 }
             });
         }
+
+        // function load_order_block(){
+        //     $.ajax({
+        //         type:'GET',
+        //         url:'/order-block',
+        //         dataType: "json",
+        //         success:function(data) {
+        //             // alert('1111');
+        //             console.log(data);
+        //             // $(".msg-error,.msg-success").html('');
+
+        //             // if(data.re){
+        //             //     window.location.href = "{{ url('') }}/"+data.re;
+        //             // }
+
+        //             $("#order-history").html(data);
+        //         }
+        //     });
+        // }
 
         function load_order_block(){
             $.ajax({
                 type:'GET',
                 url:'/order-block',
+                dataType: "json",
                 success:function(data) {
+                    // alert('1111');
                     // console.log(data);
                     // $(".msg-error,.msg-success").html('');
-                    $("#order-history").html(data);
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+                    $("#order-history").html(data.view_data);
                 }
             });
         }
@@ -300,10 +347,15 @@
             $.ajax({
                 type:'GET',
                 url:'/load_address',
+                dataType: "json",
                 success:function(data) {
                     // console.log(data);
                     // $(".msg-error,.msg-success").html('');
-                    $(".order-delivery-detail").html(data);
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+                    $(".order-delivery-detail").html(data.view_data);
                 }
             });
         }
@@ -314,6 +366,14 @@
             // $('.history_box').removeClass('display-none');
             $('.balance-block1').addClass('display-none');
             $('.balance-block2').removeClass('display-none');
+        });
+
+
+        $('#add_money_frm input').keydown(function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                return false;
+            }
         });
 
         $("#add_money_btn").click(function(e){
@@ -330,20 +390,85 @@
                 },
                 success:function(data) {
                     // console.log(data);
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+
                     $(".msg-error,.msg-success").html('');
                     if(data.error){
                         $(".msg-error").html('<div class="alert alert-danger"><ul><li>'+data.error+'</li></ul></div>');
                     }
-                    if(data.success){
-                        $("#add_money_frm")[0].reset();
-                        $("#add-money-modal").modal("hide");
-                        $(".msg-success-o").html('<div class="alert alert-success"><ul><li>'+data.success+'</li></ul></div>').show().delay(3000).fadeOut();
+                    if(data.amount){
+                        // window.location.href = "{{ url('add_moeny_to_wallet') }}/"+data.amount;
+                        $("#add_money_frm").attr('action','{{ url("add_moeny_to_wallet") }}');
+                        $("#add_money_frm").submit();
                     }
-                    load_balance_block();
-                    // $("#msg").html(data.msg);
+
+                    // if(data.success){
+                    //     $("#add_money_frm")[0].reset();
+                    //     $("#add-money-modal").modal("hide");
+                    //     $(".msg-success-o").html('<div class="alert alert-success"><ul><li>'+data.success+'</li></ul></div>').show().delay(3000).fadeOut();
+                    // }
+                    // load_balance_block();
                 }
             });
         });
+
+
+        // $("#add_money_btn").click(function(e){
+        //     e.preventDefault();
+        //     // is_zero = check_for_not_all_zero();
+        //     // if(is_zero == "Y"){
+        //     //     $(".msg-error-o").html('<div class="alert alert-danger"><ul><li>Add atleast one qty more than zero</li></ul></div>').show().delay(3000).fadeOut();
+        //     //     return false;
+        //     // }
+        //     // return false;
+
+        //     amount = $('#amount').val();
+
+        //     var form = $("#order_frm")[0];
+        //     var formData = new FormData(form);
+        //     formData.append('_token', "{{ csrf_token() }}");
+        //     formData.append('amount', amount);
+
+        //     $.ajax({
+        //         type:'POST',
+        //         url:'{{ url("add_money") }}',
+        //         dataType: "json",
+        //         cache: false,
+        //         contentType: false,
+        //         processData: false,
+        //         data : formData,
+        //         success:function(data) {
+        //             console.log(data);
+        //             // return false;
+
+        //             $(".msg-error,.msg-success").html('');
+        //             if(data.error){
+        //                 $(".msg-error").html('<div class="alert alert-danger"><ul><li>'+data.error+'</li></ul></div>');
+        //             }
+
+        //             if(data.status){
+        //                 // window.location.replace("{{ url('success') }}");
+        //                 document.location.href="{!! url('success') !!}";
+        //             }else{
+        //                 if(data.re == "login"){
+        //                     // window.location.replace("{{ url('login') }}");
+        //                     document.location.href="{!! url('login') !!}";
+        //                 }
+        //                 if(data.re == "payment"){
+        //                     $(".msg-error-o").html('<div class="alert alert-danger"><ul><li>'+data.message+'</li></ul></div>').show().delay(3000).fadeOut();
+        //                 }
+        //                 if(data.re == "cart"){
+        //                     document.location.href="{!! url('cart') !!}";
+        //                 }
+        //             }
+        //             // load_cart_block();
+        //         }
+        //     });
+        // });
+
 
         $("#add_address_btn").click(function(e){
             e.preventDefault();
@@ -374,6 +499,11 @@
                 },
                 success:function(data) {
                     // console.log(data);
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+
                     $(".msg-error,.msg-success").html('');
                     if(data.error){
                         $(".msg-error").html('<div class="alert alert-danger"><ul><li>'+data.error+'</li></ul></div>');
@@ -402,6 +532,11 @@
                     },
                     success:function(data) {
                         // console.log(data);
+
+                        if(data.re){
+                            window.location.href = "{{ url('') }}/"+data.re;
+                        }
+
                         load_address();
                         $(".msg-success-o").html('<div class="alert alert-success"><ul><li>'+data.success+'</li></ul></div>').show().delay(3000).fadeOut();
                     }
@@ -415,6 +550,11 @@
                 type:'GET',
                 url:'/get_edit_address/'+address_id,
                 success:function(data) {
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+
                     $("#edit-address-box").html(data);
                     $("#edit-address").modal('show');
                 }
@@ -425,10 +565,16 @@
             $.ajax({
                 type:'GET',
                 url:'/load_balance_block',
+                dataType: "json",
                 success:function(data) {
                     // console.log(data);
                     // $(".msg-error,.msg-success").html('');
-                    $("#balance").html(data);
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+
+                    $("#balance").html(data.view_data);
                 }
             });
         }
@@ -463,6 +609,10 @@
                 },
                 success:function(data) {
                     // console.log(data);
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
+
                     $(".msg-error,.msg-success").html('');
                     if(data.error){
                         $(".msg-error").html('<div class="alert alert-danger"><ul><li>'+data.error+'</li></ul></div>');
@@ -521,6 +671,10 @@
                     "order_id": order_id
                 },
                 success:function(data) {
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
                     if(data.status){
                         $(".msg-success-o").html('<div class="alert alert-success"><ul><li>'+data.message+'</li></ul></div>').show().delay(3000).fadeOut();
                     }else{

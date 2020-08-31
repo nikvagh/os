@@ -66,10 +66,15 @@
             $.ajax({
                 type:'GET',
                 url:'/get_edit_profil_block',
+                dataType: "json",
                 success:function(data) {
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
                     // console.log(data);
                     // $(".msg-error,.msg-success").html('');
-                    $("#edit-profile").html(data);
+                    $("#edit-profile").html(data.view_data);
                 }
             });
         }
@@ -79,9 +84,13 @@
                 type:'GET',
                 url:'/get_edit_notification_block',
                 success:function(data) {
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
                     // console.log(data);
                     // $(".msg-error,.msg-success").html('');
-                    $("#notification").html(data);
+                    $("#notification").html(data.view_data);
                 }
             });
         }
@@ -131,6 +140,10 @@
                 // },
                 success:function(data) {
                     console.log(data);
+
+                    if(data.re){
+                        window.location.href = "{{ url('') }}/"+data.re;
+                    }
                     
                     $(".msg-error-o,.msg-success-o").html('');
                     if(data.error){

@@ -23,7 +23,7 @@
                                     <div class="single-product">
                                         <div class="product-img">
                                             <a href="{{ url('medicine_details/' . $val->_id) }}">
-                                                @if(!empty($val1->images))
+                                                @if(!empty($val->images))
                                                     <img class="img-fluid" src="{{ $val->images[0]->img }}">
                                                 @endif
                                             </a>
@@ -31,7 +31,7 @@
                                         <div class="prodyct-content">
                                             <h6><a href="{{ url('medicine_details/' . $val->_id) }}">{{ $val->brand_name }}</a></h6>
                                             <p>{!! urldecode($val->description) !!}</p>
-                                            <span><sup>৳</sup>{{$val->inventory[0]->price}}</span>
+                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>{{$val->inventory[0]->price}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -55,9 +55,7 @@
     </div>
 </section>
 
-@include('partials.pagination_link', ['total_record' => 4,'per_page' => (config('constants.product_per_page')), 'curr_page' => $curr_page, 'link_root' => 'medicine/list/' ])
-
-@include('partials.recomanded')
+{{--@include('partials.recomanded') --}}
 @include('partials.order_from_phone')
 @include('partials.backtotop')
 
@@ -93,11 +91,17 @@
                     promise = $.ajax({
                     type:'GET',
                     url:'/load_more_medicine/'+page,
+                    dataType: "json",
                     success:function(data) {
+
+                        if(data.re){
+                            window.location.href = "{{ url('') }}/"+data.re;
+                        }
                             // console.log(data);
                             // return false;
-                            if(data != ""){
-                                last_el.after(data);
+                            // if(data != ""){
+                            if(data.view_data){
+                                last_el.after(data.view_data);
                                 load = "Y";
                                 last_page_class_num++;
                             }else{

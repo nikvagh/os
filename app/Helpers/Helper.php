@@ -16,10 +16,5 @@ if (!function_exists('human_file_size')) {
     function human_file_size()
     {
         echo "111";exit;
-
-        $sz = 'BKMGTPE';
-        $factor = (int)floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . $sz[$factor];
- 
     }
 }

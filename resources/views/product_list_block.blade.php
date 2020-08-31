@@ -9,7 +9,7 @@
             <div class="prodyct-content">
                 <h6><a href="{{ url('product_details/' . $val->_id) }}">{{ $val->prod_name }}</a></h6>
                 <p>{!! urldecode($val->prod_desc) !!}</p>
-                <span><sup>৳</sup>{{$val->inventory[0]->price}}</span>
+                <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>{{$val->inventory[0]->price}}</span>
             </div>
         </div>
     </div>

@@ -80,7 +80,7 @@
                                                 <span class="counter-input">
                                                     <a href="#" class="minus-btn" id="minus-btn-{{$key}}-{{ $val->stock }}"><i class="ti-minus"></i></a>
                                                     <!-- readonly -->
-                                                    <input type="text" name="qty[{{$key}}]" id="qty_{{$key}}" value="1" readonly>
+                                                    <input type="text" name="qty[{{$key}}]" id="qty_{{$key}}" value="0" readonly>
                                                     <a href="#" class="plus-btn" id="plus-btn-{{$key}}-{{ $val->stock }}"><i class="ti-plus"></i></a>
                                                 </span>
                                             </div>
@@ -129,6 +129,8 @@
         </div>
 
     </div>
+
+    <input type="hidden" id="can_buy" value="">
 </section>
 
 @include('partials.related_product', ['related_products' => $product->related_products])
@@ -177,8 +179,7 @@
             $(".arrange_box").addClass('display-none');
             $(".related-block").addClass('display-none');
             if(stock > qty_val){
-                // in stock 
-
+                // in stock
                 $("#arrange_"+p_arry[1]).prop("checked", false);
 
                 $(".in_stock_box").removeClass('display-none');
@@ -186,6 +187,8 @@
 
                 $('#minus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
                 $('#plus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
+
+                $("#can_buy").val('Y');
             }else{
                 // out of stock
                 $(".in_stock_box").addClass('display-none');
@@ -197,13 +200,19 @@
                     // console.log('#minus-btn-'+p_arry[1]+'-'+stock);
                     $('#minus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
                     $('#plus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
+
+                    $(".add_to_cart_btn").removeClass('disabled');
+                    $("#can_buy").val('Y');
                 }
 
                 $('#minus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
 
                 if($("#arrange_"+p_arry[1]).prop("checked") == false){
                     // $("#qty_"+p_arry[1]).val('0');
-                    $("#qty_"+p_arry[1]).val(stock);
+                    // $("#qty_"+p_arry[1]).val(stock);
+
+                    $(".add_to_cart_btn").addClass('disabled');
+                    $("#can_buy").val('N');
                 }
                 
             }
@@ -263,7 +272,7 @@
 
             if($("#arrange_"+$thisAry[2]).prop("checked") == false){
                 if (value == stock) {
-                    alert('Product out of stock! You can choose arrange for me');
+                    // alert('Product out of stock! You can choose arrange for me');
                 }
             }
 
@@ -277,6 +286,11 @@
         });
 
         function add_to_cart(callback){
+
+            if($("#can_buy").val() != "Y"){
+                return false;
+            }
+
             is_zero = check_for_not_all_zero();
             if(is_zero == "Y"){
                 $(".msg-error-o").html('<div class="alert alert-danger"><ul><li>Add atleast one qty more than zero</li></ul></div>').show().delay(3000).fadeOut();

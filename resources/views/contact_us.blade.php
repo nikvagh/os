@@ -55,8 +55,8 @@
                                     </div>
                                     <div class="cont-mobile">
                                         <ul>
-                                            <li><a href="#"><i class="fas fa-phone"></i><span>+887656984344</span></a></li>
-                                            <li><a href="#"><i class="fas fa-phone"></i><span>+887656984344</span></a></li>
+                                            <li><a href="#"><img src="{{ url('image/phone-icon.png') }}" alt="phone-icon"><span>+887656984344</span></a></li>
+                                            <li><a href="#"><img src="{{ url('image/phone-icon.png') }}" alt="phone-icon"><span>+887656984344</span></a></li>
                                         </ul>
                                     </div>
                                 </div>

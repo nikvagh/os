@@ -38,11 +38,11 @@ class HomeController extends Controller
             if($result->status){
                $data['home_data'] = $result->data;
             }else{
-                if($result->statusCode == 401){
+                if(isset($result->statusCode) && $result->statusCode == 401){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == 451){
+                if(isset($result->statusCode) && $result->statusCode == 451){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -62,11 +62,11 @@ class HomeController extends Controller
             if($result->status){
                $data['slider'] = $result->data;
             }else{
-                if($result->statusCode == 401){
+                if(isset($result->statusCode) && $result->statusCode == 401){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == 451){
+                if(isset($result->statusCode) && $result->statusCode == 451){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -97,11 +97,11 @@ class HomeController extends Controller
             if($result->status){
             //    $data['profile'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == config('constants.user_delete_code')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -123,11 +123,11 @@ class HomeController extends Controller
                 //    $data['profile'] = $result->data;
                 $request->session()->put('user', $result->data);
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == config('constants.user_delete_code')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -178,11 +178,11 @@ class HomeController extends Controller
                     $request->session()->put('user', $result->data);
                     $data['language'] = $result->data->language;
                 }else{
-                    if($result->statusCode == config('constants.token_ex')){
+                    if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                         Session::flash('message_e', config('constants.logout_msg'));
                         return redirect('/login');
                     }
-                    if($result->statusCode == config('constants.user_delete_code')){
+                    if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                         Session::flash('message_e', $result->message);
                         return redirect('/login');
                     }

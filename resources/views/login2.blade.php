@@ -43,12 +43,18 @@
                 <a href="#">signup</a>
             </div>
             <div class="signin-input">
-                <input type="text" name="mobile" value="{{$mobile}}" readonly>
+                <input type="text" name="mobile" value="{{$mobile}}" placeholder="0xxxxxxxxxx" maxlength="11">
+                <span class="static-country-code">+88 </span>
+                <label class="checkbox-cont">
+                    <a href="#"></a>
+                    <input type="checkbox" name="remember_me" id="remember_me">
+                    <span class="checkmark"></span>
+                </label>
             </div>
             <br/>
             <div class="send-otp">
                 <!-- <a href="login2.html" class="btn btn-style">Send OTP</a> -->
-                <input type="submit" href="" class="btn btn-style btn-block" value="Send OTP">
+                <input type="submit" href="" class="btn btn-style" value="Send OTP">
             </div>
         </form>
 
@@ -66,7 +72,7 @@
                     <a href="#" id="resend_otp">Resend OTP</a>   
                 </div>
                 <div class="continue-button">
-                    <input type="submit" name="submit" class="btn btn-style btn-block" value="Continue">
+                    <input type="submit" name="submit" class="btn btn-style" value="Continue">
                 </div>
             </div>
         </form>

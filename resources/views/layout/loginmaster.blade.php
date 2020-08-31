@@ -36,7 +36,7 @@
 
                     <div class="col comp-logo-cont">
                         <div class="comp-logo">
-                            <a href="#" class=""> <img src="{{ asset('image/logo.png') }}" alt="logo"></a>
+                            <a href="#" class=""> <img src="{{ asset('image/logo2.png') }}" alt="logo"></a>
                         </div>
                     </div>
 

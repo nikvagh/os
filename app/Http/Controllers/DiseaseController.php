@@ -111,25 +111,6 @@ class DiseaseController extends Controller
             $result = json_decode($response->getBody()->getContents());
             if($result->status){
 
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // echo "<pre>";print_r($result->data);
-
                $data['page_data'] = $result->data;
                $if_data = "Y";
             }else{
@@ -146,7 +127,10 @@ class DiseaseController extends Controller
         }
 
         if($if_data == "Y"){
-            return view('disease_list_block')->with($data);
+            // return view('disease_list_block')->with($data);
+            $data['view_data'] = view('disease_list_block')->with($data)->render();
+            return response()->json($data);
+
         }else{
             return '';
         }

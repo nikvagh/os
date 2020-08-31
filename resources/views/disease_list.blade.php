@@ -57,7 +57,7 @@
 
 {{-- @include('partials.pagination_link', ['total_record' => 4,'per_page' => (config('constants.product_per_page')), 'curr_page' => $curr_page, 'link_root' => 'disease/list/' ]) --}}
 
-@include('partials.recomanded')
+{{--@include('partials.recomanded') --}}
 @include('partials.order_from_phone')
 @include('partials.backtotop')
 
@@ -93,16 +93,23 @@
                     promise = $.ajax({
                     type:'GET',
                     url:'/load_more_disease/'+page,
+                    dataType: "json",
                     success:function(data) {
+
+                            if(data.re){
+                                window.location.href = "{{ url('') }}/"+data.re;
+                            }
+
                             // console.log(data);
                             // return false;
-                            if(data != ""){
-                                last_el.after(data);
+                            if(data.view_data != ""){
+                                last_el.after(data.view_data);
                                 load = "Y";
                                 last_page_class_num++;
                             }else{
                                 load_more = "N";
                             }
+
                         }
                     });
                 }

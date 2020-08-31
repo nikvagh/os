@@ -101,7 +101,7 @@
                                 </div>
                                 <!-- Modal body -->
                                 <div class="modal-body">
-                                    <span class="msg-success width-100p"></span>
+                                    <!-- <span class="msg-success width-100p"></span> -->
                                     <span class="msg-error width-100p"></span>
 
                                     <div class="new-addr-form">
@@ -145,7 +145,7 @@
                                                         <label>Email</label>
                                                         <input type="email" name="email" id="email" placeholder="Email">
                                                         <a href="#" class="invoice-email">
-                                                            <img src="image/invoice-info.png">Your invoice will be send to your email
+                                                            <img src="image/invoice-info.png"><span>Your invoice will be send to your email</span>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -247,20 +247,20 @@
                     <ul>
                         <li>
                             <span class="check-s-title">Sub Total</span>
-                            <span class="check-t-price">৳ {{ $total_data->subtotal }}</span>
+                            <span class="check-t-price"><img src="{{ url('image/sub-t-bengali-letter.png') }}" alt=""> {{ $total_data->subtotal }}</span>
                         </li>
                         <li>
                             <span class="check-s-title">Delivery Fee</span>
-                            <span class="check-t-price">৳ {{ $total_data->delivery_fee }}</span>
+                            <span class="check-t-price"><img src="{{ url('image/sub-t-bengali-letter.png') }}" alt=""> {{ $total_data->delivery_fee }}</span>
                         </li>
                         <li>
                             <span class="check-s-title">Discount</span>
-                            <span class="check-t-price">৳ {{ $total_data->discount }}</span>
+                            <span class="check-t-price"><img src="{{ url('image/sub-t-bengali-letter.png') }}" alt=""> {{ $total_data->discount }}</span>
                         </li>
                     </ul>
                     <div class="check-total">
                         <span>Total</span>
-                        <span>৳ {{ $total_data->total }}</span>
+                        <span><img src="{{ url('image/sub-t-bengali-letter.png') }}" alt=""> {{ $total_data->total }}</span>
                     </div>
                     <div class="edit-order-cont">
                         <a href="{{ url('cart') }}" class="edit-order-btn">Edit your order</a>
@@ -285,9 +285,16 @@
         $.ajax({
             type:'GET',
             url:'{{ url("load_address_block") }}',
+            dataType: "json",
             success:function(data) {
+
                 // console.log(data);
-                $("#address_box").html(data);
+
+                if(data.re){
+                    window.location.href = "{{ url('') }}/"+data.re;
+                }
+                // console.log(data);
+                $("#address_box").html(data.view_data);
             }
         });
     }
@@ -296,9 +303,13 @@
         $.ajax({
             type:'GET',
             url:'{{ url("load_offer_block") }}',
+            dataType: "json",
             success:function(data) {
+                if(data.re){
+                    window.location.href = "{{ url('') }}/"+data.re;
+                }
                 // console.log(data);
-                $("#offer_box").html(data);
+                $("#offer_box").html(data.view_data);
             }
         });
     }
@@ -331,6 +342,11 @@
                 "is_primary": is_primary
             },
             success:function(data) {
+
+                if(data.re){
+                    window.location.href = "{{ url('') }}/"+data.re;
+                }
+
                 // console.log(data);
                 $(".msg-error,.msg-success").html('');
                 if(data.error){
@@ -381,6 +397,10 @@
             },
             success:function(data) {
 
+                if(data.re){
+                    window.location.href = "{{ url('') }}/"+data.re;
+                }
+
             }
         });
     }
@@ -428,6 +448,11 @@
                 // "is_primary": is_primary
             },
             success:function(data) {
+
+                if(data.re){
+                    window.location.href = "{{ url('') }}/"+data.re;
+                }
+
                 if(data.status){
                     window.location.replace("{{ url('payment') }}");
                 }

@@ -2,6 +2,7 @@
 return [
     // 'API_ROOT' => 'https://5qnv40uqn4.execute-api.ap-south-1.amazonaws.com/production/',
     'API_ROOT' => 'http://13.234.217.132:3000/',
+    // 'API_ROOT' => 'http://13.232.200.52:3000/',
     'Guzzle' => [
         'ssl' => false,
         // etc
@@ -13,5 +14,6 @@ return [
     'product_per_page' => 20,
     'currency' => 'BDT',
     'ssl_json_dir' => 'ssl/',
+    'mobile_prefix' => '91',
 ];
 ?>

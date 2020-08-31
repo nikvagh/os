@@ -36,7 +36,7 @@
                                         <div class="prodyct-content">
                                             <h6><a href="product-detail.html">Elements-LIV-s Gain</a></h6>
                                             <p>For sluggish liver and infective</p>
-                                            <span><sup>৳</sup>250</span>
+                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>250</span>
                                         </div>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                         <div class="prodyct-content">
                                             <h6><a href="product-detail.html">Elements-LIV-s Gain</a></h6>
                                             <p>For sluggish liver and infective</p>
-                                            <span><sup>৳</sup>250</span>
+                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>250</span>
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                         <div class="prodyct-content">
                                             <h6><a href="product-detail.html">Elements-LIV-s Gain</a></h6>
                                             <p>For sluggish liver and infective</p>
-                                            <span><sup>৳</sup>250</span>
+                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>250</span>
                                         </div>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                                         <div class="prodyct-content">
                                             <h6><a href="product-detail.html">Elements-LIV-s Gain</a></h6>
                                             <p>For sluggish liver and infective</p>
-                                            <span><sup>৳</sup>250</span>
+                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>250</span>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +92,7 @@
                                         <div class="prodyct-content">
                                             <h6><a href="product-detail.html">Elements-LIV-s Gain</a></h6>
                                             <p>For sluggish liver and infective</p>
-                                            <span><sup>৳</sup>250</span>
+                                            <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>250</span>
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@
                                                                 <div class="prodyct-content">
                                                                     <h6><a href="">{{$val1->dis_name}}</a></h6>
                                                                     <p>{{$val1->dis_desc}}</p>
-                                                                    <!-- <span><sup>৳</sup>250</span> -->
+                                                                    <!-- <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>250</span> -->
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -195,7 +195,7 @@
                                                                 <div class="prodyct-content">
                                                                     <h6><a href="{{ url('medicine_details/' . $val1->_id) }}">{{$val1->brand_name}}</a></h6>
                                                                     <p>{!! urldecode($val1->description) !!}</p>
-                                                                    <span><sup>৳</sup>{{$val1->inventory[0]->price}}</span>
+                                                                    <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>{{$val1->inventory[0]->price}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -239,7 +239,7 @@
                                                                 <div class="prodyct-content">
                                                                     <h6><a href="product-detail.html">{{$val1->prod_name}}</a></h6>
                                                                     <p>{!! urldecode($val1->prod_desc) !!}</p>
-                                                                    <span><sup>৳</sup>{{$val1->inventory[0]->price}}</span>
+                                                                    <span><sup><img src="{{ asset('image/home-bengali-letter.png') }}" alt=""></sup>{{$val1->inventory[0]->price}}</span>
                                                                 </div>
                                                             </div>
                                                         </div>

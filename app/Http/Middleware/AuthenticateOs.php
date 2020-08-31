@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Session;
 
+use Illuminate\Http\RedirectResponse;
+
 class AuthenticateOs
 {
     /**
@@ -41,6 +43,9 @@ class AuthenticateOs
             if ($request->ajax()) {
 
                 if($request->wantsJson()){
+                    // echo "json";
+                    // exit;
+
                     // $data['status'] = 'false';
                     $data['re'] = 'login';
                     // return response([
@@ -49,6 +54,23 @@ class AuthenticateOs
                     // ], 200);
                     echo json_encode($data);
                     exit;
+                }else{
+
+                    // abort(404);
+                    // echo url('/');
+                    // header("Location: test");
+
+                    // $response = $next($request);
+                    // $response = $response instanceof RedirectResponse ? $response : response($response);
+                    // return $response->header('refresh', '5;url=' . url('/login'));
+
+                    // exit;
+
+                    // echo "html";
+                    // exit;
+                    // return redirect()->guest('/login');
+                    // return redirect('/login');
+
                 }
 
             }

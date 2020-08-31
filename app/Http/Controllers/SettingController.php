@@ -38,18 +38,19 @@ class SettingController extends Controller
             if($result->status){
                $data['profile'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
-                }
-                if($result->statusCode == config('constants.user_delete_code')){
+                }else if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
             }
         }
 
-        return view('profile-edit-block')->with($data);
+        // return view('profile-edit-block')->with($data);
+        $data['view_data'] = view('profile-edit-block')->with($data)->render();
+        return response()->json($data);
     }
 
     public function get_edit_notification_block(Request $request){
@@ -70,18 +71,21 @@ class SettingController extends Controller
             if($result->status){
                $data['profile'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
-                }
-                if($result->statusCode == config('constants.user_delete_code')){
+                }else if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
             }
         }
 
-        return view('profile-notification-block')->with($data);
+        
+        // return view('profile-notification-block')->with($data);
+        
+        $data['view_data'] = view('profile-notification-block')->with($data)->render();
+        return response()->json($data);
     }
 
 
@@ -103,7 +107,6 @@ class SettingController extends Controller
         }
 
         $token = $request->session()->get('token');
-
 
         $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
         $response = $client->post(config('constants.API_ROOT').'api/v1/users/change_name', [
@@ -168,10 +171,10 @@ class SettingController extends Controller
                 }else{
                     $data['error'] = $result->message;
                     echo json_encode($data);
+                    exit;
                 }
             }
         }
-
         // ====================
 
         if($request->hasFile('user_image')) {
@@ -266,11 +269,11 @@ class SettingController extends Controller
             if($result->status){
                 $request->session()->put('user', $result->data);
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     $data['re'] = "login";
                     echo json_encode($data);
-                }else if($result->statusCode == config('constants.user_delete_code')){
+                }else if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     $data['re'] = "login";
                     echo json_encode($data);
@@ -278,7 +281,6 @@ class SettingController extends Controller
             }
         }
         
-
         $new_data['success'] = "Profile Detail Updated successfully";
         if(\Session::has('user'))
         {

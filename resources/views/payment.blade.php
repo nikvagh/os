@@ -43,7 +43,7 @@
                         </div>
                         <div class="pay-option-detail">
                             <a href="" data-toggle="collapse" data-target="#pay-op3" id="osud_wallet_box">
-                                <img src="{{ url('image/pay-icon.png') }}" alt="pay-icon1">
+                                <img src="{{ url('image/OsudPotro_Logo_Final.png') }}" alt="pay-icon1" width="50">
                                 <span>OsudPotro Wallet</span>
                             </a>
                             <div id="pay-op3" class="collapse">
@@ -60,8 +60,8 @@
                         <p>You can review this order before its final</p>
                     </div>
                     <div class="edit-order-cont">
-                        <!-- <a href="#" class="procced-pay-btn" data-toggle="modal" data-target="#pay-continue">Continue</a> -->
-                        <a href="{{ url('checkout') }}" class="procced-pay-btn">Continue</a>
+                        <!-- <a href="#" class="procced-pay-btn continue-btn"  data-toggle="modal" data-target="#pay-continue">Continue</a> -->
+                        <a href="{{ url('checkout') }}" class="procced-pay-btn continue-btn">Continue</a>
                     </div>
                 </div>
             </div>
@@ -190,10 +190,46 @@
     </div>
 </section>
 
+<div class="add-new-address-modal" id="popup-box-order">
+    <div class="modal fade" id="popup-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <!-- <div class="modal-header">
+                    <h4 class="modal-title">Edit Address</h4>
+                </div> -->
+                <!-- Modal body -->
+                <div class="modal-body text-center modal-body-f-popup-order">
+
+                    <div class="content-bottom">
+                        <img src="{{ asset('image/green-checked-img.png') }}" class="true-img" data-dismiss="modal"/>
+                        <p class="order_heading">Order Confirmed</p>
+                        <p>Thanks for using <span class="site_name"> Osudpotro. </span> Your request <br/> has been successfully placed.</p>
+                    </div>
+
+                    <div class="btn-box">
+                        <a href="" class="btn btn-style">Track your order</a>
+                    </div>
+
+                    <img src="{{ asset('image/Close.png') }}" class="close-img" data-dismiss="modal"/>
+
+                </div>
+                <!-- Modal footer -->
+                <!-- <div class="modal-footer">
+                    <a href="" class="btn btn-style" id="edit_address_btn">Save</a>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('footer_js')
 <script>
+
+    // $("#popup-modal").modal('show');
+
     $("#cod_box").click(function(){
         place_order('cod');
     });

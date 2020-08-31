@@ -37,11 +37,11 @@ class MedicineController extends Controller
             if($result->status){
                $data['page_data'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == config('constants.user_delete_code')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -62,11 +62,11 @@ class MedicineController extends Controller
             if($result->status){
                $data['slider'] = $result->data;
             }else{
-                if($result->statusCode == 401){
+                if(isset($result->statusCode) && $result->statusCode == 401){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == 451){
+                if(isset($result->statusCode) && $result->statusCode == 451){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -166,11 +166,11 @@ class MedicineController extends Controller
             if($result->status){
                $data['product'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == config('constants.user_delete_code')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }

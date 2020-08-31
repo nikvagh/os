@@ -81,7 +81,7 @@ Route::get('/cache', function() {
 // Route::get('/login', 'LoginController@index')->middleware('checkLogin1');
 Route::get('/login', 'LoginController@index');
 Route::post('login_otp_submit', 'LoginController@login_otp_submit');
-Route::get('/otp_verify/{mobile}/{language}', 'LoginController@otp_verify');
+Route::get('/otp_verify/{mobile}/{language?}', 'LoginController@otp_verify');
 Route::post('login_otp_verify', 'LoginController@login_otp_verify');
 Route::get('/logout', 'LoginController@logout');
 
@@ -108,6 +108,8 @@ Route::middleware('checkLogin')->group(function () {
     // });
 
     Route::match(['get', 'post'], 'search_p/{needle}', 'SearchController@index');
+
+    Route::get('/ajax_search/{needle?}', 'SearchController@ajax_search');
 
     // Route::get('buscar/{nom}', 'FrontController@buscarPrd');
 
@@ -174,6 +176,7 @@ Route::middleware('checkLogin')->group(function () {
 
 
     Route::post('/payssl', 'SslCommerzPaymentController@index');
+    Route::post('/add_moeny_to_wallet', 'SslCommerzPaymentController@add_money');
 
 });
 

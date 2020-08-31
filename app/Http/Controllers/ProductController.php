@@ -40,11 +40,11 @@ class ProductController extends Controller
             if($result->status){
                $data['page_data'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == config('constants.user_delete_code')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -65,11 +65,10 @@ class ProductController extends Controller
             if($result->status){
                $data['slider'] = $result->data;
             }else{
-                if($result->statusCode == 401){
+                if(isset($result->statusCode) && $result->statusCode == 401){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
-                }
-                if($result->statusCode == 451){
+                }else if(isset($result->statusCode) && $result->statusCode == 451){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }
@@ -109,34 +108,14 @@ class ProductController extends Controller
 
             // print_r($result);
             if($result->status){
-
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // echo "<pre>";print_r($result->data);
-
                $data['page_data'] = $result->data;
                $if_data = "Y";
             }else{
                 if(isset($result->statusCode)){
-                    if($result->statusCode == config('constants.token_ex')){
+                    if(isset($result->statusCode) &&  $result->statusCode == config('constants.token_ex')){
                         Session::flash('message_e', config('constants.logout_msg'));
                         return redirect('/login');
-                    }else if($result->statusCode == config('constants.user_delete_code')){
+                    }else if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                         Session::flash('message_e', $result->message);
                         return redirect('/login');
                     }
@@ -145,7 +124,11 @@ class ProductController extends Controller
         }
 
         if($if_data == "Y"){
-            return view('product_list_block')->with($data);
+            // return view('product_list_block')->with($data);
+
+            $data['view_data'] = view('product_list_block')->with($data)->render();
+            return response()->json($data);
+
         }else{
             return '';
         }
@@ -170,11 +153,11 @@ class ProductController extends Controller
             if($result->status){
                $data['product'] = $result->data;
             }else{
-                if($result->statusCode == config('constants.token_ex')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.token_ex')){
                     Session::flash('message_e', config('constants.logout_msg'));
                     return redirect('/login');
                 }
-                if($result->statusCode == config('constants.user_delete_code')){
+                if(isset($result->statusCode) && $result->statusCode == config('constants.user_delete_code')){
                     Session::flash('message_e', $result->message);
                     return redirect('/login');
                 }

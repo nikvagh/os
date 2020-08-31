@@ -23,7 +23,7 @@ class LoginController extends Controller
         return view('login');
     }
 
-    public function otp_verify($mobile,$language) {
+    public function otp_verify($mobile,$language="en") {
         // print_r($request->all());
         $data['mobile'] = $mobile;
         $data['language'] = $language;
@@ -69,10 +69,12 @@ class LoginController extends Controller
 
 
         $validator = Validator::make($request->all(), [
-                    'mobile' => 'required|numeric||digits:11',
+                    // 'mobile' => 'required|numeric|digits:11|',
+                    'mobile' => 'required|numeric|regex:/^[0]{1}[0-9]{10}/',
                 ], [
                     'mobile.required' => 'Please Enter Mobile Number.',
-                    'mobile.numeric' => 'Please Enter Numeric value for mobile number'
+                    'mobile.numeric' => 'Please Enter Numeric value for mobile number',
+                    'mobile.regex' => 'Please Enter Valid Mobile'
                 ]
         );
         if ($validator->fails()) {
@@ -94,7 +96,7 @@ class LoginController extends Controller
             $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
             $response = $client->post(config('constants.API_ROOT').'api/v1/users/send_otp', [
                     'form_params' => [
-                        'mobile' => '+91-'.$mobile,
+                        'mobile' => '+'.config('constants.mobile_prefix').'-'.$mobile,
                         'deviceToken' => 'token',
                         'language' => $language,
                         'os' => 'web',
@@ -189,7 +191,7 @@ class LoginController extends Controller
             $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
             $response = $client->post(config('constants.API_ROOT').'api/v1/users/match_otp', [
                     'form_params' => [
-                        'mobile' => '+91-'.$mobile,
+                        'mobile' => '+'.config('constants.mobile_prefix').'-'.$mobile,
                         'otp' => $request['otps'],
                         // 'headers' => [
                         //     'Accept'     => 'application/json',
