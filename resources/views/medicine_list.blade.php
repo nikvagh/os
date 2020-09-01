@@ -36,7 +36,9 @@
                                     </div>
                                 </div>
                             @empty
-                                <div class="section-padding">
+                                <!-- <div class="section-padding"> -->
+                                <div class="col-12">
+                                    <br/><br/>
                                     <div class="other-section-title">
                                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                             <ul>
@@ -45,6 +47,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- </div> -->
                             @endforelse
                             
                         </div>

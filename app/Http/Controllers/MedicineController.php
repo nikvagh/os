@@ -20,6 +20,7 @@ class MedicineController extends Controller
     public function index(Request $request){
         $data = array();
         $token = $request->session()->get('token');
+        $data['page_data'] = array();
 
         $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
         $response = $client->post(config('constants.API_ROOT').'api/v1/medicines/get_all_w_pag', [

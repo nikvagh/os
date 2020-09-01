@@ -126,6 +126,7 @@
         </div>
 
     </div>
+    <input type="hidden" id="can_buy" value="">
 </section>
 
 <!-- @include('partials.related_product', ['related_medicines' => $product->related_medicines]) -->
@@ -133,18 +134,6 @@
 @endsection
 
 @section('footer_js')
-    <script>
-        // price_display();
-        // $('input[type=radio][name=price_radio]').change(function() {
-        //     price_display();
-        // });
-
-        // function price_display(){
-        //     var price_select = $("input[name='price_radio']:checked").val();
-        //     $('.price_block').html(price_select);
-        // }
-    </script>
-
     <script>
         price_display();
         $('input[type=radio][name=price_radio]').change(function() {
@@ -174,8 +163,7 @@
             $(".arrange_box").addClass('display-none');
             $(".related-block").addClass('display-none');
             if(stock > qty_val){
-                // in stock 
-
+                // in stock
                 $("#arrange_"+p_arry[1]).prop("checked", false);
 
                 $(".in_stock_box").removeClass('display-none');
@@ -183,6 +171,8 @@
 
                 $('#minus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
                 $('#plus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
+
+                $("#can_buy").val('Y');
             }else{
                 // out of stock
                 $(".in_stock_box").addClass('display-none');
@@ -194,13 +184,19 @@
                     // console.log('#minus-btn-'+p_arry[1]+'-'+stock);
                     $('#minus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
                     $('#plus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
+
+                    $(".add_to_cart_btn").removeClass('disabled');
+                    $("#can_buy").val('Y');
                 }
 
                 $('#minus-btn-'+p_arry[1]+'-'+stock).removeClass('unclickable');
 
                 if($("#arrange_"+p_arry[1]).prop("checked") == false){
                     // $("#qty_"+p_arry[1]).val('0');
-                    $("#qty_"+p_arry[1]).val(stock);
+                    // $("#qty_"+p_arry[1]).val(stock);
+
+                    $(".add_to_cart_btn").addClass('disabled');
+                    $("#can_buy").val('N');
                 }
                 
             }
@@ -260,7 +256,7 @@
 
             if($("#arrange_"+$thisAry[2]).prop("checked") == false){
                 if (value == stock) {
-                    alert('Product out of stock! You can choose arrange for me');
+                    // alert('Product out of stock! You can choose arrange for me');
                 }
             }
 
@@ -274,6 +270,11 @@
         });
 
         function add_to_cart(callback){
+
+            if($("#can_buy").val() != "Y"){
+                return false;
+            }
+
             is_zero = check_for_not_all_zero();
             if(is_zero == "Y"){
                 $(".msg-error-o").html('<div class="alert alert-danger"><ul><li>Add atleast one qty more than zero</li></ul></div>').show().delay(3000).fadeOut();
@@ -316,7 +317,6 @@
                     // }
                 }
             });
-
         }
 
         function check_for_not_all_zero(){

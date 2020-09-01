@@ -30,8 +30,6 @@
     </head>
     <body>
 
-        {{ \Helper::human_file_size() }}
-
         <div class="top-header">
             <div class="container">
                 <div class="row">
@@ -171,13 +169,27 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-title" href="{{ url('product/list/5f32b1ad61563518bc497dfb/1') }}">
-                                            <span>{{ __('messages.Medical_Equipment') }}</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a class="nav-title" href="{{ url('medicine/list/1') }}">
                                             <span>{{ __('messages.Prescription_Medicine') }}</span>
+                                        </a>
+                                    </li>
+                                    
+                                    @php
+                                        $menus = get_header();
+                                        //print_r($menus);
+                                    @endphp
+
+                                    @foreach ($menus as $val)
+                                        <li class="nav-item">
+                                            <a class="nav-title" href="{{ url('product/list') }}/{{ $val['cat_id'] }}/1">
+                                                <span>{{ $val['name'] }}</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                    
+                                    <!-- <li class="nav-item">
+                                        <a class="nav-title" href="{{ url('product/list/5f32b1ad61563518bc497dfb/1') }}">
+                                            <span>{{ __('messages.Medical_Equipment') }}</span>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -199,7 +211,8 @@
                                         <a class="nav-title" href="{{ url('product/list/5f32b22961563518bc497dfd/1') }}">
                                             <span>{{ __('messages.Disinfectant_Medicine') }}</span>
                                         </a>
-                                    </li>
+                                    </li> -->
+
                                     <li class="nav-item">
                                         <a class="nav-title" href="{{ url('doctor_list') }}">
                                             <span>{{ __('messages.Online_Doctors') }}</span>

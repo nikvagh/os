@@ -18,6 +18,8 @@ class ProductController extends Controller
         $data = array();
         $token = $request->session()->get('token');
 
+        $data['page_data'] = array();
+
         $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
         $response = $client->post(config('constants.API_ROOT').'api/v1/products/get_cat_prod_w_pag', [
                 'form_params' => [
@@ -78,6 +80,11 @@ class ProductController extends Controller
         $data['curr_page'] = $request->page_number;
         $data['cat_id'] = $request->cat_id;
         $data['page'] = $request->page_number-1;
+
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+
         return view('product_list')->with($data);
     }
 

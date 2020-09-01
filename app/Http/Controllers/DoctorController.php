@@ -36,11 +36,6 @@ class DoctorController extends Controller
             $result = json_decode($response->getBody()->getContents());
             if($result->status){
 
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // $result->data[] = $result->data[0];
-                // echo "<pre>";print_r($result->data);
-
                $data['page_data'] = $result->data;
             }else{
                 if($result->statusCode == config('constants.token_ex')){

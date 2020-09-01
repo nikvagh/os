@@ -20,6 +20,7 @@ class DiseaseController extends Controller
     public function index(Request $request){
         $data = array();
         $token = $request->session()->get('token');
+        $data['page_data'] = array();
 
         $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
         $response = $client->post(config('constants.API_ROOT').'api/v1/otc_disease/get_all_w_pag', [
@@ -93,8 +94,8 @@ class DiseaseController extends Controller
 
         $data = array();
         $token = $request->session()->get('token');
-        $if_data = "N";
 
+        $if_data = "N";
         $data['page'] = $request->page;
         $client = new \GuzzleHttp\Client(['verify' => config('constants.Guzzle.ssl')]);
         $response = $client->post(config('constants.API_ROOT').'api/v1/otc_disease/get_all_w_pag', [
